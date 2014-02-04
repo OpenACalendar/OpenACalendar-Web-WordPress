@@ -22,15 +22,19 @@ class OpenACalendarEventsWidget extends WP_Widget {
 
 	protected static $includedAssets = false;
 	
+	const OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT = 300;
 	
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$groupSlug = intval($instance['groupslug']) ? intval($instance['groupslug']) : null;
+		$descriptionMaxLength = isset($instance['descriptionmaxlength']) ? 
+				intval($instance['descriptionmaxlength']) : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
 		
 		$jsURL = plugins_url().'/openacalendar/js/listeventswidget.js';
 				
 		
-		$data = array('dummy'=>'5');
+		$data = array('descriptionMaxLength'=>$descriptionMaxLength);
 		if ($groupSlug) {
 			$data['groupID'] = $groupSlug;
 			$moreURL =  $instance['baseurl'] . '/group/'. $groupSlug;
@@ -62,6 +66,9 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		$title = isset( $instance[ 'title' ] ) ? $instance[ 'title' ] :  __( 'Events', 'text_domain' );
 		$baseurl = isset( $instance[ 'baseurl' ] ) ? $instance[ 'baseurl' ] : 'http://demo.hasacalendar.co.uk';
 		$groupslug = isset( $instance[ 'groupslug' ] ) ? $instance[ 'groupslug' ] : '';
+		$descriptionmaxlength = isset( $instance[ 'descriptionmaxlength' ] ) ? 
+				$instance[ 'descriptionmaxlength' ] : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
 		
 		?>
 		<p>
@@ -76,6 +83,10 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'groupslug' ); ?>"><?php _e( 'Group Slug:' ); ?></label> 
 		<input class="widefat" id="<?php echo $this->get_field_id( 'groupslug' ); ?>" name="<?php echo $this->get_field_name( 'groupslug' ); ?>" type="text" value="<?php echo esc_attr( $groupslug ); ?>">
 		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'descriptionmaxlength' ); ?>"><?php _e( 'Description Max Length:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'descriptionmaxlength' ); ?>" name="<?php echo $this->get_field_name( 'descriptionmaxlength' ); ?>" type="text" value="<?php echo esc_attr( $descriptionmaxlength ); ?>">
+		</p>
 		<?php 
 	}
 
@@ -89,6 +100,9 @@ class OpenACalendarEventsWidget extends WP_Widget {
 					$instance['baseurl'] = 'http://'.$instance['baseurl'];
 		}
 		$instance['groupslug'] = ( ! empty( $new_instance['groupslug'] ) ) ? intval( $new_instance['groupslug'] ) : '';
+		$instance['descriptionmaxlength'] = ( isset( $new_instance['descriptionmaxlength'] ) ) ? 
+				intval( $new_instance['descriptionmaxlength'] ) : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
 
 		return $instance;
 	}
