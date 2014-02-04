@@ -14,6 +14,7 @@ var OpenACalendarWidgetListEvents = {
 			eventCount: 5,
 			descriptionMaxLength: 300,
 			groupID: undefined,
+			eventUseSummaryDisplay: true
 		}
 		for (var prop in options) {
 			if (options.hasOwnProperty(prop)) {
@@ -29,7 +30,7 @@ var OpenACalendarWidgetListEvents = {
 				html = '<div class="OpenACalendarWidgetListEventsEventNone">No events</div>';
 			} else {
 				for (var i=0;i<limit;i++) {
-					html += OpenACalendarWidgetListEvents.htmlFromEvent(data.data[i], usingOptions.descriptionMaxLength);
+					html += OpenACalendarWidgetListEvents.htmlFromEvent(data.data[i], usingOptions.descriptionMaxLength, usingOptions.eventUseSummaryDisplay);
 				}
 			}
 
@@ -52,10 +53,12 @@ var OpenACalendarWidgetListEvents = {
 		var headTag = document.getElementsByTagName('head').item(0);
 		headTag.appendChild(script);
 	},
-	htmlFromEvent: function(event, descriptionMaxLength) {
+	htmlFromEvent: function(event, descriptionMaxLength, eventUseSummaryDisplay) {
 		var html = '<div class="OpenACalendarWidgetListEventsEvent">'
 		html += '<div class="OpenACalendarWidgetListEventsDate">'+event.start.displaylocal+'</div>';
-		html += '<div class="OpenACalendarWidgetListEventsSummary"><a href="'+event.siteurl+'">'+OpenACalendarWidgetListEvents.escapeHTML(event.summaryDisplay)+'</a></div>';
+		html += '<div class="OpenACalendarWidgetListEventsSummary"><a href="'+event.siteurl+'">'+
+			OpenACalendarWidgetListEvents.escapeHTML(eventUseSummaryDisplay ? event.summaryDisplay : event.summary)+
+			'</a></div>';
 		if (descriptionMaxLength > 0) {
 			html += '<div class="OpenACalendarWidgetListEventsDescription">'+OpenACalendarWidgetListEvents.escapeHTMLNewLine(event.description, descriptionMaxLength)+'</div>';
 			html += '<a class="OpenACalendarWidgetListEventsMoreLink" href="'+event.siteurl+'">More Info</a>';
