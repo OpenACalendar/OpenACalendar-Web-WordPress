@@ -23,6 +23,7 @@ class OpenACalendarEventsWidget extends WP_Widget {
 	protected static $includedAssets = false;
 	
 	const OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT = 300;
+	const OPTION_DEFAULT_EVENT_COUNT = 5;
 	
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -30,11 +31,17 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		$descriptionMaxLength = isset($instance['descriptionmaxlength']) ? 
 				intval($instance['descriptionmaxlength']) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
+		$eventCount= isset($instance['eventcount']) ? 
+				intval($instance['eventcount']) : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
 		
 		$jsURL = plugins_url().'/openacalendar/js/listeventswidget.js';
 				
 		
-		$data = array('descriptionMaxLength'=>$descriptionMaxLength);
+		$data = array(
+				'descriptionMaxLength'=>$descriptionMaxLength,
+				'eventCount'=>$eventCount
+			);
 		if ($groupSlug) {
 			$data['groupID'] = $groupSlug;
 			$moreURL =  $instance['baseurl'] . '/group/'. $groupSlug;
@@ -69,6 +76,9 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		$descriptionmaxlength = isset( $instance[ 'descriptionmaxlength' ] ) ? 
 				$instance[ 'descriptionmaxlength' ] : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
+		$eventcount = isset( $instance[ 'eventcount' ] ) ? 
+				$instance[ 'eventcount' ] : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
 		
 		?>
 		<p>
@@ -87,6 +97,10 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'descriptionmaxlength' ); ?>"><?php _e( 'Description Max Length:' ); ?></label> 
 		<input class="widefat" id="<?php echo $this->get_field_id( 'descriptionmaxlength' ); ?>" name="<?php echo $this->get_field_name( 'descriptionmaxlength' ); ?>" type="text" value="<?php echo esc_attr( $descriptionmaxlength ); ?>">
 		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'eventcount' ); ?>"><?php _e( 'Max Events Shown:' ); ?></label> 
+		<input class="widefat" id="<?php echo $this->get_field_id( 'eventcount' ); ?>" name="<?php echo $this->get_field_name( 'eventcount' ); ?>" type="text" value="<?php echo esc_attr( $eventcount ); ?>">
+		</p>
 		<?php 
 	}
 
@@ -103,6 +117,9 @@ class OpenACalendarEventsWidget extends WP_Widget {
 		$instance['descriptionmaxlength'] = ( isset( $new_instance['descriptionmaxlength'] ) ) ? 
 				intval( $new_instance['descriptionmaxlength'] ) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
+		$instance['eventcount'] = ( isset( $new_instance['eventcount'] ) ) ? 
+				intval( $new_instance['eventcount'] ) : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
 
 		return $instance;
 	}
