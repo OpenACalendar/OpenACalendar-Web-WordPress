@@ -23,6 +23,19 @@ class OpenACalendarModelEvent {
 	protected $url;
 	protected $timezone;
 	
+	public function buildFromDatabase($data) {
+		$this->baseurl = $data['baseurl'];
+		$this->slug = $data['slug'];
+		$this->summary = $data['summary'];
+		$this->description = $data['description'];
+		$utc = new DateTimeZone("UTC");
+		$this->start_at = new DateTime($data['start_at'], $utc);
+		$this->end_at = new DateTime($data['end_at'], $utc);
+		$this->siteurl = $data['siteurl'];
+		$this->url = $data['url'];
+		$this->timezone = $data['timezone'];
+	}
+	
 	public function buildFromAPI1JSON($baseurl, $data) {
 		$this->baseurl = $baseurl;
 		$this->slug = $data->slug;

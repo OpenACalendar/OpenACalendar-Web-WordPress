@@ -18,7 +18,9 @@ register_activation_hook( __DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.
 // ################################################## Widgets
 function openacalendar_plugin_register_widgets() {
 	require __DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'widgetv1.php';
+	require __DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'widget.php';
 	register_widget( 'OpenACalendarEventsWidget' );
+	register_widget( 'OpenACalendarLocalEventsWidget' );
 }
 add_action( 'widgets_init', 'openacalendar_plugin_register_widgets' );
 

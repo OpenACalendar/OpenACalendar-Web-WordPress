@@ -70,3 +70,21 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 	
 }
 
+
+function OpenACalendar_db_getNextEventsForPool($poolid, $limit=5) {
+	global $wpdb;
+	
+	$out = array();
+	
+	foreach($wpdb->get_results(
+			$wpdb->prepare("SELECT event.* FROM ".$wpdb->prefix."openacalendar_event AS event ".
+					"JOIN ".$wpdb->prefix."openacalendar_event_in_pool AS event_in_pool ON event.id = event_in_pool.eventid ".
+					"WHERE event_in_pool.poolid=%d AND end_at > NOW() LIMIT ".intval($limit), $poolid)
+			,ARRAY_A) as $data) {
+		$event = new OpenACalendarModelEvent();
+		$event->buildFromDatabase($data);
+		$out[] = $event;
+	}
+	return $out;
+	
+}

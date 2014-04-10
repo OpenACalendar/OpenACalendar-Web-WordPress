@@ -13,8 +13,8 @@ class OpenACalendarEventsWidget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'openacalendar_events_widget', // Base ID
-			__('OpenACalendar Events', 'text_domain'), // Name
-			array( 'description' => __( 'List OpenAcalendar Events', 'text_domain' ), ) // Args
+			__('OpenACalendar Events (DEPRECEATED)', 'text_domain'), // Name
+			array( 'description' => __( 'List OpenAcalendar Events (DEPRECEATED)', 'text_domain' ), ) // Args
 		);
 		wp_enqueue_style( 'openacalendar-events-widget', plugins_url().'/openacalendar/css/listeventswidget.css' );
 	}
