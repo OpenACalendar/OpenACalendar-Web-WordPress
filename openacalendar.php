@@ -22,4 +22,10 @@ function openacalendar_plugin_register_widgets() {
 }
 add_action( 'widgets_init', 'openacalendar_plugin_register_widgets' );
 
+// ################################################## Admin menu
 
+function openacalendar_admin_menu_init() {
+	require_once(__DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'admin.php');
+	add_options_page( 'OpenACalendar options', 'OpenACalendar', 'manage_options', 'openacalendar-admin-menu', 'OpenACalendar_admin_menu' );
+}
+add_action( 'admin_menu', 'openacalendar_admin_menu_init' );
