@@ -50,6 +50,7 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 			'baseurl'=>$event->getBaseurl(),
 			'slug'=>$event->getSlug(),
 			'summary'=>$event->getSummary(),
+			'summary_display'=>$event->getSummaryDisplay(),
 			'description'=>$event->getDescription(),
 			'start_at'=>$event->getStartAtForDatabase(),
 			'end_at'=>$event->getEndAtForDatabase(),
@@ -88,3 +89,4 @@ function OpenACalendar_db_getNextEventsForPool($poolid, $limit=5) {
 	return $out;
 	
 }
+

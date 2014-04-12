@@ -42,9 +42,10 @@ function OpenACalendar_database_setup() {
 
 		dbDelta(  "CREATE TABLE ".$wpdb->prefix."openacalendar_event  (
 			id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			baseurl VARCHAR(255) DEFAULT '' NOT NULL,
+			baseurl VARCHAR(255) NOT NULL,
 			slug MEDIUMINT UNSIGNED NOT NULL,
 			summary VARCHAR(255) NULL,
+			summary_display VARCHAR(255) NULL,
 			description TEXT NULL,
 			start_at DATETIME NULL,
 			end_at DATETIME NULL,

@@ -25,6 +25,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 	
 	const OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT = 300;
 	const OPTION_DEFAULT_EVENT_COUNT = 5;
+	const OPTION_DEFAULT_USE_SUMMARY_DISPLAY = 1;
 	
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -35,7 +36,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventCount= isset($instance['eventcount']) ? 
 				intval($instance['eventcount']) : 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
-		
+		$eventusesummarydisplay = isset($instance['eventusesummarydisplay']) ? 
+				intval($instance['eventusesummarydisplay']) : 
+				OpenACalendarEventsWidget::OPTION_DEFAULT_USE_SUMMARY_DISPLAY;
+				
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -45,7 +49,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			echo '<div class="OpenACalendarWidgetListEventsEvent">';
 			// TODO date
 			echo '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($event->getSiteurl()).'">'.
-				htmlspecialchars($event->getSummary()).
+				htmlspecialchars($eventusesummarydisplay ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
 			// TODO description
 			// TODO moreinfo
@@ -65,6 +69,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventCount= isset($instance['eventcount']) ? 
 				intval($instance['eventcount']) : 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
+		$eventusesummarydisplay = isset( $instance[ 'eventusesummarydisplay' ] ) ? 
+				intval($instance[ 'eventusesummarydisplay' ]):
+				OpenACalendarEventsWidget::OPTION_DEFAULT_USE_SUMMARY_DISPLAY;
 		
 		?>
 		<p>
@@ -83,6 +90,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'eventcount' ); ?>"><?php _e( 'Max Events Shown:' ); ?></label> 
 		<input class="widefat" id="<?php echo $this->get_field_id( 'eventcount' ); ?>" name="<?php echo $this->get_field_name( 'eventcount' ); ?>" type="text" value="<?php echo esc_attr( $eventCount ); ?>">
 		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'eventusesummarydisplay' ); ?>"><?php _e( 'Use Fuller Event Titles:' ); ?></label> 
+		<input id="<?php echo $this->get_field_id( 'eventusesummarydisplay' ); ?>" name="<?php echo $this->get_field_name( 'eventusesummarydisplay' ); ?>" type="checkbox" value="1" <?php if ($eventusesummarydisplay) { echo "checked"; }; ?>>
+		</p>
 		<?php 
 	}
 
@@ -97,6 +108,8 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['eventcount'] = ( isset( $new_instance['eventcount'] ) ) ? 
 				intval( $new_instance['eventcount'] ) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
+		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] ) ) ? 1 : 0;
+				
 		return $instance;
 	}
 }

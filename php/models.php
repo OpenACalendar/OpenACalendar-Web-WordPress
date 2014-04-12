@@ -16,6 +16,7 @@ class OpenACalendarModelEvent {
 
 
 	protected $summary;
+	protected $summary_display;
 	protected $description;
 	protected $start_at;
 	protected $end_at;
@@ -27,6 +28,7 @@ class OpenACalendarModelEvent {
 		$this->baseurl = $data['baseurl'];
 		$this->slug = $data['slug'];
 		$this->summary = $data['summary'];
+		$this->summary_display = $data['summary_display'];
 		$this->description = $data['description'];
 		$utc = new DateTimeZone("UTC");
 		$this->start_at = new DateTime($data['start_at'], $utc);
@@ -39,7 +41,8 @@ class OpenACalendarModelEvent {
 	public function buildFromAPI1JSON($baseurl, $data) {
 		$this->baseurl = $baseurl;
 		$this->slug = $data->slug;
-		$this->summary = $data->summaryDisplay;
+		$this->summary = $data->summary;
+		$this->summary_display = $data->summaryDisplay;
 		$this->description = $data->description;
 		$utc = new DateTimeZone("UTC");
 		$this->start_at = new DateTime("", $utc);
@@ -67,6 +70,10 @@ class OpenACalendarModelEvent {
 		return $this->summary;
 	}
 
+	public function getSummaryDisplay() {
+		return $this->summary_display;
+	}
+	
 	public function getDescription() {
 		return $this->description;
 	}
