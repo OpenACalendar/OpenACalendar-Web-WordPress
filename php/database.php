@@ -61,11 +61,9 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 		$id = $wpdb->insert_id;
 	}
 	
-	$wpdb->insert($wpdb->prefix."openacalendar_event_in_pool",array(
-			'eventid'=>$id,
-			'poolid'=>$poolid,
-			'sourceid'=>$sourceid,
-		));
+	$wpdb->query(
+		$wpdb->prepare('INSERT IGNORE INTO '.$wpdb->prefix.'openacalendar_event_in_pool (eventid,poolid,sourceid) VALUES (%d,%d,%d)',$id,$poolid,$sourceid)
+	); 
 	
 	return $id;
 	
