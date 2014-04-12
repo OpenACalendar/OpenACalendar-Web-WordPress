@@ -115,6 +115,17 @@ class OpenACalendarModelEvent {
 			return $sa->format("Y-m-d H:i:s");
 		}
 	}
+
+	public function getStartAtAsString($timezone='UTC', $format="Y-m-d H:i:s") {
+		if ($this->start_at->getTimezone() == $timezone) {
+			return $this->start_at->format($format);
+		} else {
+			$sa = clone $this->start_at;
+			$sa->setTimezone(new \DateTimeZone($timezone));
+			return $sa->format($format);
+		}
+	}
+
 	
 	public function getEndAt() {
 		return $this->end_at;
