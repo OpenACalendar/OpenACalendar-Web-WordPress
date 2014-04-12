@@ -44,7 +44,18 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 			$wpdb->prepare("SELECT id FROM ".$wpdb->prefix."openacalendar_event WHERE baseurl=%s AND slug=%d",$event->getBaseurl(),$event->getSlug())
 			);
 	if ($id) {
-		// TODO;
+		$wpdb->update($wpdb->prefix."openacalendar_event",array(
+			'summary'=>$event->getSummary(),
+			'summary_display'=>$event->getSummaryDisplay(),
+			'description'=>$event->getDescription(),
+			'start_at'=>$event->getStartAtForDatabase(),
+			'end_at'=>$event->getEndAtForDatabase(),
+			'siteurl'=>$event->getSiteurl(),
+			'url'=>$event->getUrl(),
+			'timezone'=>$event->getTimezone(),
+		),array(
+			'id'=>$id
+		));
 	} else {
 		$wpdb->insert($wpdb->prefix."openacalendar_event",array(
 			'baseurl'=>$event->getBaseurl(),
