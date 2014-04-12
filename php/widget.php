@@ -58,7 +58,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 
 	public function form( $instance ) {
 		$title = isset( $instance[ 'title' ] ) ? $instance[ 'title' ] :  __( 'Events', 'text_domain' );
-		$poolID = apply_filters( 'poolid', $instance['poolid'] );
+		$poolID = apply_filters( 'poolid', isset($instance['poolid']) ? $instance['poolid'] : null );
 		$descriptionMaxLength = isset($instance['descriptionmaxlength']) ? 
 				intval($instance['descriptionmaxlength']) : 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT;
