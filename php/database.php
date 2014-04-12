@@ -99,3 +99,11 @@ function OpenACalendar_db_getNextEventsForPool($poolid, $limit=5) {
 	
 }
 
+function OpenACalendar_db_newPool($title) {
+	global $wpdb;
+	$wpdb->insert($wpdb->prefix."openacalendar_pool",array(
+			'title'=>trim($title),
+		));
+	return $wpdb->insert_id;
+}
+

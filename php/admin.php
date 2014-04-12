@@ -34,6 +34,13 @@ function OpenACalendar_admin_menu() {
 			}
 		}
 		
+		
+		
+	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
+		
+		$id = OpenACalendar_db_newPool($_POST['title']);
+		print '<p>Done</p>';
+		
 	} else {
 	
 	
@@ -61,7 +68,14 @@ function OpenACalendar_admin_menu() {
 		} else {
 			echo '<p>No pools</p>';
 		}
+		
+		print '<form action="" method="post">';
+		print '<label>New Event Pool: <input type="text" name="title"></label>';
+		print '<input type="hidden" name="action" value="newpool">';
+		print '<input type="submit" value="Create">';
+		print '</form>';
 	}
+	
 	
 	echo '</div>';
 }
