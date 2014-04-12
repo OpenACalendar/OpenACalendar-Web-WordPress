@@ -101,6 +101,10 @@ class OpenACalendarModelEvent {
 	public function getDescription() {
 		return $this->description;
 	}
+	
+	public function getDescriptionTruncated($length) {
+		return substr($this->description,0,$length).' ...';
+	}
 
 	public function getStartAt() {
 		return $this->start_at;

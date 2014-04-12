@@ -55,7 +55,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			echo '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($event->getSiteurl()).'">'.
 				htmlspecialchars($eventusesummarydisplay ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
-			// TODO description
+			if ($descriptionMaxLength > 0) {
+				echo '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
+			}
 			echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . $event->getSiteurl() . '">More Info</a>';
 			echo '</div>';
 		}
