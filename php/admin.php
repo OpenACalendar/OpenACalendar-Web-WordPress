@@ -33,7 +33,14 @@ function OpenACalendar_admin_menu() {
 				print "</p>";
 			}
 		}
+
+	} else 	if (isset($_POST['action']) && $_POST['action'] == 'newsource' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		
+		$source = new OpenACalendarModelSource();
+		$source->setPoolID($_POST['poolid']);
+		$source->setBaseurl($_POST['baseurl']);
+		$id = OpenACalendar_db_newSource($source);
+		print '<p>Done</p>';
 		
 		
 	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
@@ -61,9 +68,18 @@ function OpenACalendar_admin_menu() {
 					print '<input type="hidden" name="action" value="getevents">';
 					print '<input type="submit" value="Get events now">';
 					print '</form>';
+					
 				} else {
 					echo '<p>No sources</p>';
 				}
+				
+				print '<form action="" method="post">';
+				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
+				print '<label>New Source URL: <input type="text" name="baseurl"></label>';
+				print '<input type="hidden" name="action" value="newsource">';
+				print '<input type="submit" value="Create">';
+				print '</form>';
+
 			}
 		} else {
 			echo '<p>No pools</p>';

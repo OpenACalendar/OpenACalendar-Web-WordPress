@@ -8,6 +8,30 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
+class OpenACalendarModelSource {
+
+	//protected $id;
+	protected $poolid;
+	protected $baseurl;
+	
+	// TODO group_slug MEDIUMINT UNSIGNED NULL,
+	// TODO area_slug MEDIUMINT UNSIGNED NULL,
+	// TODO venue_slug MEDIUMINT UNSIGNED NULL,
+	// TODO curated_list_slug MEDIUMINT UNSIGNED NULL,
+	// TODO country_code VARCHAR(10) NULL,
+	
+	//public function getId() { return $this->id; }
+	
+	public function getPoolID() { return $this->poolid; }
+	public function setPoolID($poolid) { $this->poolid = $poolid; }
+	public function getBaseurl() { return $this->baseurl; }
+	public function setBaseurl($baseurl) { 
+		// TODO verify as much as possible, strip http://
+		$this->baseurl = $baseurl; 
+	}
+	
+}
+
 class OpenACalendarModelEvent {
 
 	protected $id;

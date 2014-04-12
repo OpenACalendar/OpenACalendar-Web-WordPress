@@ -107,3 +107,13 @@ function OpenACalendar_db_newPool($title) {
 	return $wpdb->insert_id;
 }
 
+
+function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
+	global $wpdb;
+	$wpdb->insert($wpdb->prefix."openacalendar_source",array(
+			'poolid'=>$source->getPoolID(),
+			'baseurl'=>$source->getBaseurl(),
+		));
+	return $wpdb->insert_id;
+}
+
