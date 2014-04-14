@@ -21,7 +21,7 @@ function OpenACalendar_admin_menu() {
 
 	require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
 	
-	echo '<div class="wrap">';
+	echo '<div class="wrap"><h2>Open A Calendar</h2>';
 	
 	if (isset($_POST['action']) && $_POST['action'] == 'getevents' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		// ##################################################### Fetch events for Pool
@@ -65,35 +65,52 @@ function OpenACalendar_admin_menu() {
 		
 		if ($pools) {
 			foreach($pools as $pool) {
-				print "<p>Event Pool ".$pool['id'].": ".htmlspecialchars($pool['title'])."</p>";
+				print "<h3>Event Pool ".$pool['id'].": ".htmlspecialchars($pool['title'])."</h3>";
 				$sources = OpenACalendar_db_getCurrentSourcesForPool($pool['id']);
+				
+				print '<table class="wp-list-table fixed widefat">';
+				print '<thead>';
+				print '<tr>';
+				print '<th>Source URL</th>';
+				print '<th>Actions</th>';
+				print '</tr>';
+				print '</thead>';
+				print '<tbody>';
+				foreach ($sources as $source) {
+					print '<tr>';
+					print "<th>".htmlspecialchars($source['baseurl']).'</th>';
+					print "<th>&nbsp;</th>";
+					print "</tr>";
+				}
+
+				print '<tr>';
+				print '<form action="" method="post">';
+				print '<input type="hidden" name="action" value="newsource">';	
+				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
+				print '<th>New Source URL: <input type="text" name="baseurl"></th>';
+				print '<th><input type="submit" value="Create"></th>';
+				print '</form>';
+				print "</tr>";
+
+
+				print '</tbody>';
+				print '</table>';
+					
 				if ($sources) {
-					foreach ($sources as $source) {
-						print "<p>Source: ".htmlspecialchars($source['baseurl']);
-						print "</p>";
-					}
 					print '<form action="" method="post">';
 					print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
 					print '<input type="hidden" name="action" value="getevents">';
 					print '<input type="submit" value="Get events now">';
 					print '</form>';
-					
-				} else {
-					echo '<p>No sources</p>';
 				}
 				
-				print '<form action="" method="post">';
-				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
-				print '<label>New Source URL: <input type="text" name="baseurl"></label>';
-				print '<input type="hidden" name="action" value="newsource">';
-				print '<input type="submit" value="Create">';
-				print '</form>';
 
 			}
 		} else {
 			echo '<p>No pools</p>';
 		}
 		
+		print '<h3>New Event Pool</h3>';
 		print '<form action="" method="post">';
 		print '<label>New Event Pool: <input type="text" name="title"></label>';
 		print '<input type="hidden" name="action" value="newpool">';
