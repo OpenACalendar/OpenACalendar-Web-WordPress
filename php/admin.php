@@ -8,6 +8,12 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
+function OpenACalendar_admin_returnToMenuHTML() {
+	$url = admin_url('options-general.php?page=openacalendar-admin-menu');
+	return '<p><a href="'.$url.'">Back to OpenACalendar settings</a></p>';
+
+}
+
 function OpenACalendar_admin_menu() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -33,7 +39,8 @@ function OpenACalendar_admin_menu() {
 				print "</p>";
 			}
 		}
-
+		print OpenACalendar_admin_returnToMenuHTML();
+		
 	} else 	if (isset($_POST['action']) && $_POST['action'] == 'newsource' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		
 		$source = new OpenACalendarModelSource();
@@ -41,12 +48,14 @@ function OpenACalendar_admin_menu() {
 		$source->setBaseurl($_POST['baseurl']);
 		$id = OpenACalendar_db_newSource($source);
 		print '<p>Done</p>';
+		print OpenACalendar_admin_returnToMenuHTML();
 		
 		
 	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
 		
 		$id = OpenACalendar_db_newPool($_POST['title']);
 		print '<p>Done</p>';
+		print OpenACalendar_admin_returnToMenuHTML();
 		
 	} else {
 	
