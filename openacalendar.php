@@ -24,6 +24,12 @@ function openacalendar_plugin_register_widgets() {
 }
 add_action( 'widgets_init', 'openacalendar_plugin_register_widgets' );
 
+
+
+// ################################################## SHORTCODES
+require_once(__DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'shortcode.php');
+add_shortcode( 'openacalendar_events', 'OpenACalendar_shortcode_events' );
+
 // ################################################## Admin menu
 
 function openacalendar_admin_menu_init() {
