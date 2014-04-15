@@ -10,6 +10,14 @@
 require_once __DIR__.DIRECTORY_SEPARATOR."models.php";
 require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
 
+function OpenACalendar_getAllEvents() {
+	foreach (OpenACalendar_db_getCurrentPools() as $pool) {
+		foreach(OpenACalendar_db_getCurrentSourcesForPool($pool['id']) as $source) {
+			OpenACalendar_getAndStoreEventsForSource($source);
+		}
+	}
+}
+
 function OpenACalendar_getAndStoreEventsForSource($sourcedata) {
 	
 	$url = "http://".$sourcedata['baseurl']."/api1";

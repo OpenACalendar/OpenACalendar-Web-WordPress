@@ -30,6 +30,14 @@ add_action( 'widgets_init', 'openacalendar_plugin_register_widgets' );
 require_once(__DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'shortcode.php');
 add_shortcode( 'openacalendar_events', 'OpenACalendar_shortcode_events' );
 
+// ################################################## Get events in Cron
+require_once(__DIR__.DIRECTORY_SEPARATOR.'php'.DIRECTORY_SEPARATOR.'fetch.php');
+add_action( 'openacalendar_getallevents', 'OpenACalendar_getAllEvents' );
+if ( ! wp_next_scheduled( 'openacalendar_getallevents' ) ) {
+  wp_schedule_event( time(), 'hourly', 'openacalendar_getallevents' );
+}
+ 
+ 
 // ################################################## Admin menu
 
 function openacalendar_admin_menu_init() {
