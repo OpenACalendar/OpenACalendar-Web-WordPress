@@ -47,7 +47,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
-		echo '<div id="OpenACalendarListEvents'.$args['widget_id'].'">';
+		echo '<div class="OpenACalendarListEvents" id="OpenACalendarListEvents'.$args['widget_id'].'">';
 
 		foreach(OpenACalendar_db_getNextEventsForPool($poolID, $eventCount) as $event) {
 			echo '<div class="OpenACalendarWidgetListEventsEvent">';
