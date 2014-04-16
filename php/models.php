@@ -32,8 +32,11 @@ class OpenACalendarModelSource {
 	}
 	
 	public function getId() { return $this->id; }
-	
-	public function getPoolID() { return $this->poolid; }
+	public function setId($id) {
+		$this->id = $id;
+	}
+
+ 	public function getPoolID() { return $this->poolid; }
 	public function setPoolID($poolid) { $this->poolid = $poolid; }
 	public function getBaseurl() { return $this->baseurl; }
 	public function setBaseurl($baseurl) { 

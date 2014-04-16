@@ -125,6 +125,7 @@ function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
 			'country_code'=>$source->getCountryCode(),
 			'baseurl'=>$source->getBaseurl(),
 		));
-	return $wpdb->insert_id;
+	$source->setId($wpdb->insert_id);
+	return $source->getId();
 }
 

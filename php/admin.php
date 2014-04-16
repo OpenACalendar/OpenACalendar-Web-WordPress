@@ -61,6 +61,9 @@ function OpenACalendar_admin_menu() {
 		print '<p>Done</p>';
 		print OpenACalendar_admin_returnToMenuHTML();
 		
+		// run importer now so we have some data straight away
+		require_once dirname(__FILE__).DIRECTORY_SEPARATOR."fetch.php";
+		OpenACalendar_getAndStoreEventsForSource($source);
 		
 	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
 		
