@@ -41,6 +41,21 @@ function OpenACalendar_admin_menu() {
 		}
 		print OpenACalendar_admin_returnToMenuHTML();
 		
+	} else if (isset($_POST['action']) && $_POST['action'] == 'getevents' && isset($_POST['sourceid']) && intval($_POST['sourceid'])) {
+		// ##################################################### Fetch events for Source
+
+		require_once dirname(__FILE__).DIRECTORY_SEPARATOR."fetch.php";
+
+		$source = OpenACalendar_db_getCurrentSource(intval($_POST['sourceid']));
+		if ($source) {
+			$count = OpenACalendar_getAndStoreEventsForSource($source);
+			print "<p>Source: ".htmlspecialchars($source->getBaseurl());
+			
+			print " got ".$count." events.";
+			print "</p>";
+		}
+		
+		print OpenACalendar_admin_returnToMenuHTML();
 	} else 	if (isset($_POST['action']) && $_POST['action'] == 'newsource' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		
 		$source = new OpenACalendarModelSource();
@@ -59,11 +74,14 @@ function OpenACalendar_admin_menu() {
 		$source->setBaseurl($_POST['baseurl']);
 		$id = OpenACalendar_db_newSource($source);
 		print '<p>Done</p>';
-		print OpenACalendar_admin_returnToMenuHTML();
 		
-		// run importer now so we have some data straight away
-		require_once dirname(__FILE__).DIRECTORY_SEPARATOR."fetch.php";
-		OpenACalendar_getAndStoreEventsForSource($source);
+		print '<form action="" method="post">';
+		print '<input type="hidden" name="sourceid" value="'.$source->getId().'">';
+		print '<input type="hidden" name="action" value="getevents">';
+		print '<input type="submit" value="Get events from this source now">';
+		print '</form>';
+		
+		print OpenACalendar_admin_returnToMenuHTML();
 		
 	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
 		

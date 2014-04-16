@@ -42,6 +42,16 @@ function OpenACalendar_db_getCurrentPool($poolid) {
 			,ARRAY_A);
 }
 
+function OpenACalendar_db_getCurrentSource($sourceid) {
+	global $wpdb;
+	
+	$source = new OpenACalendarModelSource();
+	$source->buildFromDatabase($wpdb->get_row(
+			$wpdb->prepare("SELECT * FROM ".$wpdb->prefix."openacalendar_source WHERE deleted=0 AND id=%d", $sourceid)
+			,ARRAY_A));
+	return $source;
+}
+
 
 function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $sourceid) {
 	global $wpdb;
