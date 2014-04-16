@@ -177,7 +177,18 @@ class OpenACalendarModelEvent {
 	}
 	
 	public function getDescriptionTruncated($length) {
-		return substr($this->description,0,$length).' ...';
+		if ($length  == 0) {
+			return '';
+		} else if ($length > strlen($this->description)) {
+			return $this->description;
+		} else {
+			$cut_at = $length;
+			$cut_chars = array(' ',',','.','\n','\t','\r');
+			while($cut_at > 0 && !in_array(substr($this->description, $cut_at, 1), $cut_chars)) {
+				$cut_at--;
+			}
+			return substr($this->description,0,$cut_at).' ...';
+		}
 	}
 
 	public function getStartAt() {
