@@ -29,17 +29,24 @@ function OpenACalendar_getAndStoreEventsForSource(OpenACalendarModelSource $sour
 	curl_close($ch);
 
 	$data = json_decode($dataString);
-
-	$count = 0;
 	
-	foreach($data->data as $eventData) {
-		$eventModel = new OpenACalendarModelEvent();
-		$eventModel->buildFromAPI1JSON($sourcedata->getBaseurl(), $eventData);
-		$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata->getPoolID(), $sourcedata->getId());
-		$count++;
+	if (is_object($data)) {
+
+		$count = 0;
+
+		foreach($data->data as $eventData) {
+			$eventModel = new OpenACalendarModelEvent();
+			$eventModel->buildFromAPI1JSON($sourcedata->getBaseurl(), $eventData);
+			$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata->getPoolID(), $sourcedata->getId());
+			$count++;
+		}
+
+		return $count;
+	
+	} else {
+		return -1;
 	}
 	
-	return $count;
 	
 	
 	
