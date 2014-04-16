@@ -124,6 +124,7 @@ class OpenACalendarModelEvent {
 	protected $siteurl;
 	protected $url;
 	protected $timezone;
+	protected $deleted;
 	
 	public function buildFromDatabase($data) {
 		$this->baseurl = $data['baseurl'];
@@ -137,6 +138,7 @@ class OpenACalendarModelEvent {
 		$this->siteurl = $data['siteurl'];
 		$this->url = $data['url'];
 		$this->timezone = $data['timezone'];
+		$this->deleted = $data['deleted'];
 	}
 	
 	public function buildFromAPI1JSON($baseurl, $data) {
@@ -152,7 +154,8 @@ class OpenACalendarModelEvent {
 		$this->end_at->setTimestamp($data->end->timestamp);
 		$this->siteurl = $data->siteurl;
 		$this->url = $data->url;
-		$this->timezone = $data->timezone;	
+		$this->timezone = $data->timezone;
+		$this->deleted = $data->deleted;	
 	}
 	
 	public function getId() {
@@ -245,6 +248,10 @@ class OpenACalendarModelEvent {
 		return $this->timezone;
 	}
 
+
+	public function getDeleted() {
+		return $this->deleted;
+	}
 
 	
 }
