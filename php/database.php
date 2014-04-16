@@ -21,10 +21,16 @@ function OpenACalendar_db_getCurrentPools() {
 
 function OpenACalendar_db_getCurrentSourcesForPool($poolid) {
 	global $wpdb;
+	$out = array();
 	
-	return $wpdb->get_results(
+	foreach($wpdb->get_results(
 			$wpdb->prepare("SELECT * FROM ".$wpdb->prefix."openacalendar_source WHERE deleted=0 AND poolid=%d", $poolid)
-			,ARRAY_A);
+			,ARRAY_A) as $sourceData) {
+		$source = new OpenACalendarModelSource();
+		$source->buildFromDatabase($sourceData);
+		$out[] = $source;
+	}
+	return $out;
 }
 
 

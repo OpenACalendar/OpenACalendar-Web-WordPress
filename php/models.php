@@ -20,6 +20,17 @@ class OpenACalendarModelSource {
 	protected $curated_list_slug;
 	protected $country_code;
 	
+	public function buildFromDatabase($data) {
+		$this->id = $data['id'];
+		$this->poolid = $data['poolid'];
+		$this->baseurl = $data['baseurl'];
+		$this->group_slug = $data['group_slug'];
+		$this->area_slug = $data['area_slug'];
+		$this->venue_slug = $data['venue_slug'];
+		$this->curated_list_slug = $data['curated_list_slug'];
+		$this->country_code = $data['country_code'];
+	}
+	
 	public function getId() { return $this->id; }
 	
 	public function getPoolID() { return $this->poolid; }
@@ -73,6 +84,15 @@ class OpenACalendarModelSource {
 		$this->country_code = $country_code;
 	}
 
+	public function getJSONAPIURL() {
+		$url = "http://".$this->baseurl."/api1";
+		
+		// TODO filters
+		
+		$url .= '/events.json';
+		
+		return $url;
+	}
 	
 }
 

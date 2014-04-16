@@ -18,31 +18,24 @@ function OpenACalendar_getAllEvents() {
 	}
 }
 
-function OpenACalendar_getAndStoreEventsForSource($sourcedata) {
-	
-	$url = "http://".$sourcedata['baseurl']."/api1";
-	
-	// TODO filters
-	
-	$url .= '/events.json';
+function OpenACalendar_getAndStoreEventsForSource(OpenACalendarModelSource $sourcedata) {
 	
 	$ch = curl_init();      
-	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_URL, $sourcedata->getJSONAPIURL());
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, 'OpenACalendar WordPress plugin from jmbtechnology.co.uk');
 	$dataString = curl_exec($ch);
 	$response = curl_getinfo( $ch );
 	curl_close($ch);
 
-	
 	$data = json_decode($dataString);
 
 	$count = 0;
 	
 	foreach($data->data as $eventData) {
 		$eventModel = new OpenACalendarModelEvent();
-		$eventModel->buildFromAPI1JSON($sourcedata['baseurl'], $eventData);
-		$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata['poolid'], $sourcedata['id']);
+		$eventModel->buildFromAPI1JSON($sourcedata->getBaseurl(), $eventData);
+		$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata->getPoolID(), $sourcedata->getId());
 		$count++;
 	}
 	

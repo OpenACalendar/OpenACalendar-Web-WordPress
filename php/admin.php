@@ -33,7 +33,7 @@ function OpenACalendar_admin_menu() {
 			$sources = OpenACalendar_db_getCurrentSourcesForPool($pool['id']);
 			foreach ($sources as $source) {
 				$count = OpenACalendar_getAndStoreEventsForSource($source);
-				print "<p>Source: ".htmlspecialchars($source['baseurl']);
+				print "<p>Source: ".htmlspecialchars($source->getBaseurl());
 				
 				print " got ".$count." events.";
 				print "</p>";
@@ -78,7 +78,7 @@ function OpenACalendar_admin_menu() {
 				print '<tbody>';
 				foreach ($sources as $source) {
 					print '<tr>';
-					print "<th>".htmlspecialchars($source['baseurl']).'</th>';
+					print "<th>".htmlspecialchars($source->getBaseurl()).'</th>';
 					print "<th>&nbsp;</th>";
 					print "</tr>";
 				}

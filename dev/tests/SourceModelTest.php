@@ -60,5 +60,27 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($result, $source->getCuratedListSlug());
 	}
 	
+	
+	
+	function dataForTestJSONAPIURL() {
+		return array(
+			array('cat.com',null,null,null,null,null,'http://cat.com/api1/events.json'),
+		);
+	}
+	
+	/**
+	* @dataProvider dataForTestJSONAPIURL
+	*/
+	function testJSONAPIURL($baseurl, $group_slug, $area_slug, $venue_slug, $curated_list_slug, $country_code, $result) {
+		$source = new OpenACalendarModelSource();
+		$source->setBaseurl($baseurl);
+		$source->setGroupSlug($group_slug);
+		$source->setAreaSlug($area_slug);
+		$source->setVenueSlug($venue_slug);
+		$source->setCuratedListSlug($curated_list_slug);
+		$source->setCountryCode($country_code);
+		$this->assertEquals($result, $source->getJSONAPIURL());
+	}
+	
 }
 
