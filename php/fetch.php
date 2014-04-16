@@ -7,8 +7,8 @@
  * @copyright (c) 2013-2014, JMB Technology Limited, http://jmbtechnology.co.uk/
  * @author James Baster <james@jarofgreen.co.uk>
  */
-require_once __DIR__.DIRECTORY_SEPARATOR."models.php";
-require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR."models.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
 function OpenACalendar_getAllEvents() {
 	foreach (OpenACalendar_db_getCurrentPools() as $pool) {

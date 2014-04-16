@@ -19,7 +19,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'eventcount'=>20,
 	), $atts );
 	
-	require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
+	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
 	$html = '<div class="OpenACalendarListEvents">';
 

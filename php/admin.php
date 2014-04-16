@@ -19,14 +19,14 @@ function OpenACalendar_admin_menu() {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
 
-	require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
+	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 	
 	echo '<div class="wrap"><h2>Open A Calendar</h2>';
 	
 	if (isset($_POST['action']) && $_POST['action'] == 'getevents' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		// ##################################################### Fetch events for Pool
 
-		require_once __DIR__.DIRECTORY_SEPARATOR."fetch.php";
+		require_once dirname(__FILE__).DIRECTORY_SEPARATOR."fetch.php";
 
 		$pool = OpenACalendar_db_getCurrentPool(intval($_POST['poolid']));
 		if ($pool) {

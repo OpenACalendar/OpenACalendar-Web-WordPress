@@ -8,7 +8,7 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
-require_once __DIR__.DIRECTORY_SEPARATOR."models.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR."models.php";
 
 function OpenACalendar_db_getCurrentPools() {
 	global $wpdb;

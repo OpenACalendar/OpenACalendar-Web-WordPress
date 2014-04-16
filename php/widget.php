@@ -8,7 +8,7 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
-require_once __DIR__.DIRECTORY_SEPARATOR."database.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
 class OpenACalendarLocalEventsWidget extends WP_Widget {
 	
