@@ -118,6 +118,11 @@ function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
 	global $wpdb;
 	$wpdb->insert($wpdb->prefix."openacalendar_source",array(
 			'poolid'=>$source->getPoolID(),
+			'group_slug'=>$source->getGroupSlug(),
+			'venue_slug'=>$source->getVenueSlug(),
+			'area_slug'=>$source->getAreaSlug(),
+			'curated_list_slug'=>$source->getCuratedListSlug(),
+			'country_code'=>$source->getCountryCode(),
 			'baseurl'=>$source->getBaseurl(),
 		));
 	return $wpdb->insert_id;

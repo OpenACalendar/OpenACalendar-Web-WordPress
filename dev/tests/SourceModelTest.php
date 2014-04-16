@@ -65,6 +65,11 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 	function dataForTestJSONAPIURL() {
 		return array(
 			array('cat.com',null,null,null,null,null,'http://cat.com/api1/events.json'),
+			array('cat.com',1,null,null,null,null,'http://cat.com/api1/group/1/events.json'),
+			array('cat.com',null,2,null,null,null,'http://cat.com/api1/area/2/events.json'),
+			array('cat.com',null,null,3,null,null,'http://cat.com/api1/venue/3/events.json'),
+			array('cat.com',null,null,null,4,null,'http://cat.com/api1/curatedlist/4/events.json'),
+			array('cat.com',null,null,null,null,"NO",'http://cat.com/api1/country/NO/events.json'),
 		);
 	}
 	

@@ -45,6 +45,17 @@ function OpenACalendar_admin_menu() {
 		
 		$source = new OpenACalendarModelSource();
 		$source->setPoolID($_POST['poolid']);
+		if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'group') {
+			$source->setGroupSlug($_POST['filterValue']);
+		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'area') {
+			$source->setAreaSlug($_POST['filterValue']);
+		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'curatedlist') {
+			$source->setCuratedListSlug($_POST['filterValue']);
+		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'country') {
+			$source->setCountryCode($_POST['filterValue']);
+		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'venue') {
+			$source->setVenueSlug($_POST['filterValue']);
+		}
 		$source->setBaseurl($_POST['baseurl']);
 		$id = OpenACalendar_db_newSource($source);
 		print '<p>Done</p>';
@@ -72,14 +83,24 @@ function OpenACalendar_admin_menu() {
 				print '<thead>';
 				print '<tr>';
 				print '<th>Source URL</th>';
+				print '<th>Country</th>';
+				print '<th>Area</th>';
+				print '<th>Venue</th>';
+				print '<th>Group</th>';
+				print '<th>Curated List</th>';
 				print '<th>Actions</th>';
 				print '</tr>';
 				print '</thead>';
 				print '<tbody>';
 				foreach ($sources as $source) {
 					print '<tr>';
-					print "<th>".htmlspecialchars($source->getBaseurl()).'</th>';
-					print "<th>&nbsp;</th>";
+					print "<td>".htmlspecialchars($source->getBaseurl()).'</td>';
+					print "<td>".htmlspecialchars($source->getCountryCode()).'</td>';
+					print "<td>".htmlspecialchars($source->getAreaSlug()).'</td>';
+					print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
+					print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
+					print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
+					print "<td>&nbsp;</td>";
 					print "</tr>";
 				}
 
@@ -87,8 +108,12 @@ function OpenACalendar_admin_menu() {
 				print '<form action="" method="post">';
 				print '<input type="hidden" name="action" value="newsource">';	
 				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
-				print '<th>New Source URL: <input type="text" name="baseurl"></th>';
-				print '<th><input type="submit" value="Create"></th>';
+				print '<td>New Source URL: <input type="text" name="baseurl"></td>';
+				print '<td colspan="5"><select name="filterKey">';
+				print '<option value="">filter?</option><option value="group">group</option><option value="area">area</option>';
+				print '<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>';
+				print '</select>: <input type="text" name="filterValue"></td>';
+				print '<td><input type="submit" value="Create"></td>';
 				print '</form>';
 				print "</tr>";
 

@@ -24,11 +24,11 @@ class OpenACalendarModelSource {
 		$this->id = $data['id'];
 		$this->poolid = $data['poolid'];
 		$this->baseurl = $data['baseurl'];
-		$this->group_slug = $data['group_slug'];
-		$this->area_slug = $data['area_slug'];
-		$this->venue_slug = $data['venue_slug'];
-		$this->curated_list_slug = $data['curated_list_slug'];
-		$this->country_code = $data['country_code'];
+		$this->group_slug = $data['group_slug'] ? $data['group_slug'] : null;
+		$this->area_slug = $data['area_slug'] ? $data['area_slug'] : null;
+		$this->venue_slug = $data['venue_slug'] ? $data['venue_slug'] : null;
+		$this->curated_list_slug = $data['curated_list_slug'] ? $data['curated_list_slug'] : null;
+		$this->country_code = $data['country_code'] ? $data['country_code'] : null;
 	}
 	
 	public function getId() { return $this->id; }
@@ -87,7 +87,17 @@ class OpenACalendarModelSource {
 	public function getJSONAPIURL() {
 		$url = "http://".$this->baseurl."/api1";
 		
-		// TODO filters
+		if ($this->group_slug) {
+			$url .= '/group/'.$this->group_slug;
+		} else if ($this->venue_slug) {
+			$url .= '/venue/'.$this->venue_slug;
+		} else if ($this->area_slug) {
+			$url .= '/area/'.$this->area_slug;
+		} else if ($this->curated_list_slug) {
+			$url .= '/curatedlist/'.$this->curated_list_slug;
+		} else if ($this->country_code) {
+			$url .= '/country/'.$this->country_code;
+		}
 		
 		$url .= '/events.json';
 		
