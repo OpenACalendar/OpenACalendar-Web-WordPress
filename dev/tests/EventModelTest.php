@@ -47,6 +47,7 @@ class EventModelTest extends \PHPUnit_Framework_TestCase {
 				'siteurl'=>null,
 				'url'=>null,
 				'timezone'=>null,
+				'deleted'=>null,
 				'description'=>$set,
 			));
 		$this->assertEquals($result, $event->getDescriptionTruncated($length));
