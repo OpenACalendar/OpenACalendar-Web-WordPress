@@ -10,17 +10,17 @@
 
 class OpenACalendarModelSource {
 
-	//protected $id;
+	protected $id;
 	protected $poolid;
 	protected $baseurl;
 	
-	// TODO group_slug MEDIUMINT UNSIGNED NULL,
-	// TODO area_slug MEDIUMINT UNSIGNED NULL,
-	// TODO venue_slug MEDIUMINT UNSIGNED NULL,
-	// TODO curated_list_slug MEDIUMINT UNSIGNED NULL,
-	// TODO country_code VARCHAR(10) NULL,
+	protected $group_slug;
+	protected $area_slug;
+	protected $venue_slug;
+	protected $curated_list_slug;
+	protected $country_code;
 	
-	//public function getId() { return $this->id; }
+	public function getId() { return $this->id; }
 	
 	public function getPoolID() { return $this->poolid; }
 	public function setPoolID($poolid) { $this->poolid = $poolid; }
@@ -29,6 +29,50 @@ class OpenACalendarModelSource {
 		// TODO verify as much as possible, strip http://
 		$this->baseurl = $baseurl; 
 	}
+	
+	public function getGroupSlug() {
+		return $this->group_slug;
+	}
+
+	public function setGroupSlug($group_slug) {
+		$bits = explode("-", $group_slug, 2);
+		$this->group_slug = isset($bits[0]) ? $bits[0] : null;
+	}
+
+	public function getAreaSlug() {
+		return $this->area_slug;
+	}
+
+	public function setAreaSlug($area_slug) {
+		$bits = explode("-", $area_slug, 2);
+		$this->area_slug = isset($bits[0]) ? $bits[0] : null;	}
+
+	public function getVenueSlug() {
+		return $this->venue_slug;
+	}
+
+	public function setVenueSlug($venue_slug) {
+		$bits = explode("-", $venue_slug, 2);
+		$this->venue_slug = isset($bits[0]) ? $bits[0] : null;
+	}
+
+	public function getCuratedListSlug() {
+		return $this->curated_list_slug;
+	}
+
+	public function setCuratedListSlug($curated_list_slug) {
+		$bits = explode("-", $curated_list_slug, 2);
+		$this->curated_list_slug = isset($bits[0]) ? $bits[0] : null;
+	}
+
+	public function getCountryCode() {
+		return $this->country_code;
+	}
+
+	public function setCountryCode($country_code) {
+		$this->country_code = $country_code;
+	}
+
 	
 }
 
