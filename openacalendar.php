@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: OpenACalendar
- * Plugin URI: http://ican.openacalendar.org/
- * Description: Incorporate data from an OpenACalendar site into your Wordpress.
- * Version: 1.0.0
- * Author: JMB Technology Ltd
- * Author URI: http://jmbtechnology.co.uk/
- * License: BSD http://ican.openacalendar.org/license.html
+Plugin Name: OpenACalendar
+Plugin URI: http://ican.openacalendar.org/
+Description: Incorporate data from an OpenACalendar site into your Wordpress.
+Version: 2.0.0
+Author: JMB Technology Ltd
+Author URI: http://jmbtechnology.co.uk/
+License: BSD http://ican.openacalendar.org/license.html
  */
 
 
