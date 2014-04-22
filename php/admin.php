@@ -97,7 +97,7 @@ function OpenACalendar_admin_menu() {
 		
 		if ($pools) {
 			foreach($pools as $pool) {
-				print "<h3>Event Pool ".$pool['id'].": ".htmlspecialchars($pool['title'])."</h3>";
+				print "<h3>Event Pool: ".htmlspecialchars($pool['title'])." (ID=".$pool['id'].")</h3>";
 				$sources = OpenACalendar_db_getCurrentSourcesForPool($pool['id']);
 				
 				print '<table class="wp-list-table fixed widefat">';
