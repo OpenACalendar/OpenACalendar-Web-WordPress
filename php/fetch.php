@@ -23,7 +23,7 @@ function OpenACalendar_getAndStoreEventsForSource(OpenACalendarModelSource $sour
 	$ch = curl_init();      
 	curl_setopt($ch, CURLOPT_URL, $sourcedata->getJSONAPIURL());
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_USERAGENT, 'OpenACalendar WordPress plugin from jmbtechnology.co.uk');
+	curl_setopt($ch, CURLOPT_USERAGENT, 'OpenACalendar WordPress plugin from jmbtechnology.co.uk, site '.get_site_url());
 	$dataString = curl_exec($ch);
 	$response = curl_getinfo( $ch );
 	curl_close($ch);
@@ -52,3 +52,4 @@ function OpenACalendar_getAndStoreEventsForSource(OpenACalendarModelSource $sour
 	
 	
 }
+
