@@ -40,8 +40,13 @@ class OpenACalendarModelSource {
 	public function setPoolID($poolid) { $this->poolid = $poolid; }
 	public function getBaseurl() { return $this->baseurl; }
 	public function setBaseurl($baseurl) { 
-		// TODO verify as much as possible, strip http://
-		$this->baseurl = $baseurl; 
+		if (substr(strtolower($baseurl),0,7) == 'http://') {
+			$baseurl = substr(strtolower($baseurl),7);
+		} else if (substr(strtolower($baseurl),0,8) == 'https://') {
+			$baseurl = substr(strtolower($baseurl),8);
+		}
+		$bits = explode('/', $baseurl, 2);
+		$this->baseurl = $bits[0]; 
 	}
 	
 	public function getGroupSlug() {

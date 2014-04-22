@@ -87,5 +87,25 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($result, $source->getJSONAPIURL());
 	}
 	
+	function dataForSetBaseURL() {
+		return array(
+			array('http://cat.com','cat.com'),
+			array('https://cat.com','cat.com'),
+			array('cat.com','cat.com'),
+			array('http://cat.com/api1','cat.com'),
+			array('https://cat.com/api1','cat.com'),
+			array('cat.com/api1','cat.com'),
+		);
+	}
+	
+	/**
+	* @dataProvider dataForSetBaseURL
+	*/
+	function testSetBaseURL($in, $out) {
+		$source = new OpenACalendarModelSource();
+		$source->setBaseurl($in);
+		$this->assertEquals($out, $source->getBaseurl());
+	}
+	
 }
 
