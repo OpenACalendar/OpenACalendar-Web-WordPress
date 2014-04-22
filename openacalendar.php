@@ -3,7 +3,7 @@
 Plugin Name: OpenACalendar
 Plugin URI: http://ican.openacalendar.org/
 Description: Incorporate data from an OpenACalendar site into your Wordpress.
-Version: 2.0.0
+Version: 2.0.1
 Author: JMB Technology Ltd
 Author URI: http://jmbtechnology.co.uk/
 License: BSD http://ican.openacalendar.org/license.html
