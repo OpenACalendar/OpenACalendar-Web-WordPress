@@ -100,49 +100,35 @@ function OpenACalendar_admin_menu() {
 				print "<h3>Event Pool: ".htmlspecialchars($pool['title'])." (ID=".$pool['id'].")</h3>";
 				$sources = OpenACalendar_db_getCurrentSourcesForPool($pool['id']);
 				
-				print '<table class="wp-list-table fixed widefat">';
-				print '<thead>';
-				print '<tr>';
-				print '<th>Source URL</th>';
-				print '<th>Country</th>';
-				print '<th>Area</th>';
-				print '<th>Venue</th>';
-				print '<th>Group</th>';
-				print '<th>Curated List</th>';
-				print '<th>Actions</th>';
-				print '</tr>';
-				print '</thead>';
-				print '<tbody>';
-				foreach ($sources as $source) {
-					print '<tr>';
-					print "<td>".htmlspecialchars($source->getBaseurl()).'</td>';
-					print "<td>".htmlspecialchars($source->getCountryCode()).'</td>';
-					print "<td>".htmlspecialchars($source->getAreaSlug()).'</td>';
-					print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
-					print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
-					print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
-					print "<td>&nbsp;</td>";
-					print "</tr>";
-				}
-
-				print '<tr>';
-				print '<form action="" method="post">';
-				print '<input type="hidden" name="action" value="newsource">';	
-				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
-				print '<td>New Source URL: <input type="text" name="baseurl"></td>';
-				print '<td colspan="5"><select name="filterKey">';
-				print '<option value="">filter?</option><option value="group">group</option><option value="area">area</option>';
-				print '<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>';
-				print '</select>: <input type="text" name="filterValue"></td>';
-				print '<td><input type="submit" value="Create"></td>';
-				print '</form>';
-				print "</tr>";
-
-
-				print '</tbody>';
-				print '</table>';
-					
 				if ($sources) {
+					print '<table class="wp-list-table fixed widefat">';
+					print '<thead>';
+					print '<tr>';
+					print '<th>Source URL</th>';
+					print '<th>Country</th>';
+					print '<th>Area</th>';
+					print '<th>Venue</th>';
+					print '<th>Group</th>';
+					print '<th>Curated List</th>';
+					print '<th>Actions</th>';
+					print '</tr>';
+					print '</thead>';
+					print '<tbody>';
+					foreach ($sources as $source) {
+						print '<tr>';
+						print "<td>".htmlspecialchars($source->getBaseurl()).'</td>';
+						print "<td>".htmlspecialchars($source->getCountryCode()).'</td>';
+						print "<td>".htmlspecialchars($source->getAreaSlug()).'</td>';
+						print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
+						print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
+						print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
+						print "<td>&nbsp;</td>";
+						print "</tr>";
+					}
+					print '</tbody>';
+					print '</table>';
+					
+					
 					print '<form action="" method="post">';
 					print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
 					print '<input type="hidden" name="action" value="getevents">';
@@ -150,6 +136,17 @@ function OpenACalendar_admin_menu() {
 					print '</form>';
 				}
 				
+				print '';
+				print '<form action="" method="post">';
+				print '<input type="hidden" name="action" value="newsource">';	
+				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
+				print '<td>New Source URL: <input type="text" name="baseurl"></td>';
+				print '<td colspan="5"><select name="filterKey">';
+				print '<option value="">filter by?</option><option value="group">group</option><option value="area">area</option>';
+				print '<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>';
+				print '</select>: <input type="text" name="filterValue"></td>';
+				print '<td><input type="submit" value="Create New Source"></td>';
+				print '</form>';
 
 			}
 		} else {
@@ -158,7 +155,7 @@ function OpenACalendar_admin_menu() {
 		
 		print '<h3>New Event Pool</h3>';
 		print '<form action="" method="post">';
-		print '<label>New Event Pool: <input type="text" name="title"></label>';
+		print '<label>Title: <input type="text" name="title"></label>';
 		print '<input type="hidden" name="action" value="newpool">';
 		print '<input type="submit" value="Create">';
 		print '</form>';
