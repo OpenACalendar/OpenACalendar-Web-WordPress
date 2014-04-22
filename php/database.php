@@ -128,16 +128,44 @@ function OpenACalendar_db_newPool($title) {
 
 function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
 	global $wpdb;
-	$wpdb->insert($wpdb->prefix."openacalendar_source",array(
-			'poolid'=>$source->getPoolID(),
-			'group_slug'=>$source->getGroupSlug(),
-			'venue_slug'=>$source->getVenueSlug(),
-			'area_slug'=>$source->getAreaSlug(),
-			'curated_list_slug'=>$source->getCuratedListSlug(),
-			'country_code'=>$source->getCountryCode(),
-			'baseurl'=>$source->getBaseurl(),
+	$existing = $wpdb->get_row(
+			$wpdb->prepare("SELECT * FROM ".$wpdb->prefix."openacalendar_source WHERE ".
+				"poolid=%d AND ".
+				"group_slug=%d AND ".
+				"venue_slug=%d AND ".
+				"area_slug=%d AND ".
+				"curated_list_slug=%d AND ".
+				"country_code=%d AND ".
+				"baseurl=%s  ",
+				$source->getPoolID(),
+				$source->getGroupSlug(),
+				$source->getVenueSlug(),
+				$source->getAreaSlug(),
+				$source->getCuratedListSlug(),
+				$source->getCountryCode(),
+				$source->getBaseurl()
+				)
+			,ARRAY_A);
+	if ($existing) {
+		$source->setId($existing['id']);
+		$wpdb->update($wpdb->prefix."openacalendar_source",array(
+			'deleted'=>0,
+		),array(
+			'id'=>$source->getId(),
 		));
-	$source->setId($wpdb->insert_id);
+	} else {
+		$wpdb->insert($wpdb->prefix."openacalendar_source",array(
+				'poolid'=>$source->getPoolID(),
+				'group_slug'=>$source->getGroupSlug(),
+				'venue_slug'=>$source->getVenueSlug(),
+				'area_slug'=>$source->getAreaSlug(),
+				'curated_list_slug'=>$source->getCuratedListSlug(),
+				'country_code'=>$source->getCountryCode(),
+				'baseurl'=>$source->getBaseurl(),
+			));
+		$source->setId($wpdb->insert_id);
+	}
+	
 	return $source->getId();
 }
 
