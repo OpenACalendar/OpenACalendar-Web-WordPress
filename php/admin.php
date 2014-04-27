@@ -56,6 +56,21 @@ function OpenACalendar_admin_menu() {
 		}
 		
 		print OpenACalendar_admin_returnToMenuHTML();
+		
+		
+	} else if (isset($_POST['action']) && $_POST['action'] == 'deletesource' && isset($_POST['sourceid']) && intval($_POST['sourceid'])) {
+		// ##################################################### Delete Source
+
+		$source = OpenACalendar_db_getCurrentSource(intval($_POST['sourceid']));
+		if ($source) {
+			OpenACalendar_db_deleteSource($source);
+			print "<p>Removed Source: ".htmlspecialchars($source->getBaseurl());
+			print "</p>";
+		}
+		
+		print OpenACalendar_admin_returnToMenuHTML();
+		
+		
 	} else 	if (isset($_POST['action']) && $_POST['action'] == 'newsource' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 		
 		$source = new OpenACalendarModelSource();
@@ -122,7 +137,15 @@ function OpenACalendar_admin_menu() {
 						print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
-						print "<td>&nbsp;</td>";
+						print "<td>";
+						
+						print '<form action="" method="post" onsubmit="return confirm(\'Are you sure you want to remove this?\');">';
+						print '<input type="hidden" name="sourceid" value="'.$source->getId().'">';
+						print '<input type="hidden" name="action" value="deletesource">';
+						print '<input type="submit" value="Remove Source">';
+						print '</form>';
+						
+						print "</td>";
 						print "</tr>";
 					}
 					print '</tbody>';

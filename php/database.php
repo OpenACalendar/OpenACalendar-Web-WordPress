@@ -169,3 +169,12 @@ function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
 	return $source->getId();
 }
 
+function OpenACalendar_db_deleteSource(OpenACalendarModelSource $source) {
+	global $wpdb;
+	$wpdb->update($wpdb->prefix."openacalendar_source",array(
+		'deleted'=>1,
+	),array(
+		'id'=>$source->getId(),
+	));
+}
+
