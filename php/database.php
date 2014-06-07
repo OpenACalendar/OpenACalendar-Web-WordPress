@@ -107,7 +107,8 @@ function OpenACalendar_db_getNextEventsForPool($poolid, $limit=5) {
 	foreach($wpdb->get_results(
 			$wpdb->prepare("SELECT event.* FROM ".$wpdb->prefix."openacalendar_event AS event ".
 					"JOIN ".$wpdb->prefix."openacalendar_event_in_pool AS event_in_pool ON event.id = event_in_pool.eventid ".
-					"WHERE event_in_pool.poolid=%d AND event.end_at > NOW() AND event.deleted = 0 GROUP BY event.id LIMIT ".intval($limit), $poolid)
+					"WHERE event_in_pool.poolid=%d AND event.end_at > NOW() AND event.deleted = 0 ".
+					"GROUP BY event.id ORDER BY event.start_at ASC LIMIT ".intval($limit), $poolid)
 			,ARRAY_A) as $data) {
 		$event = new OpenACalendarModelEvent();
 		$event->buildFromDatabase($data);
