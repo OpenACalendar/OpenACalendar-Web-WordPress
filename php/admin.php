@@ -140,7 +140,7 @@ function OpenACalendar_admin_menu() {
 						print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
-						print "<td>".htmlspecialchars($source->getUserAttendingEvents)().'</td>';
+						print "<td>".htmlspecialchars($source->getUserAttendingEvents()).'</td>';
 						print "<td>";
 						
 						print '<form action="" method="post" onsubmit="return confirm(\'Are you sure you want to remove this?\');">';
