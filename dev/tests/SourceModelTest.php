@@ -23,6 +23,15 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 			array('237-test',237),
 		);
 	}
+	
+	function dataForTestSetUserAttendingEventsSlug() {
+		return array(
+			array('',null),
+			array('jarofgreen','jarofgreen'),
+			array(' jarofgreen','jarofgreen'),
+			array(' jar of green','jarofgreen'),
+		);
+	}
 
 	/**
 	* @dataProvider dataForTestSetSlug
@@ -58,6 +67,16 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 		$source = new OpenACalendarModelSource();
 		$source->setCuratedListSlug($set);
 		$this->assertEquals($result, $source->getCuratedListSlug());
+	}
+	
+	
+	/**
+	* @dataProvider dataForTestSetUserAttendingEventsSlug
+	*/
+	function testSetUserAttendingEventsSlug($set, $result) {
+		$source = new OpenACalendarModelSource();
+		$source->setUserAttendingEvents($set);
+		$this->assertEquals($result, $source->getUserAttendingEvents());
 	}
 	
 	

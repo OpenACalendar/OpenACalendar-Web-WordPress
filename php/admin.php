@@ -85,6 +85,8 @@ function OpenACalendar_admin_menu() {
 			$source->setCountryCode($_POST['filterValue']);
 		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'venue') {
 			$source->setVenueSlug($_POST['filterValue']);
+		} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'userattending') {
+			$source->setUserAttendingEvents($_POST['filterValue']);
 		}
 		$source->setBaseurl($_POST['baseurl']);
 		$id = OpenACalendar_db_newSource($source);
@@ -125,6 +127,7 @@ function OpenACalendar_admin_menu() {
 					print '<th>Venue</th>';
 					print '<th>Group</th>';
 					print '<th>Curated List</th>';
+					print '<th>User Attending</th>';
 					print '<th>Actions</th>';
 					print '</tr>';
 					print '</thead>';
@@ -137,6 +140,7 @@ function OpenACalendar_admin_menu() {
 						print "<td>".htmlspecialchars($source->getVenueSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getGroupSlug()).'</td>';
 						print "<td>".htmlspecialchars($source->getCuratedListSlug()).'</td>';
+						print "<td>".htmlspecialchars($source->getUserAttendingEvents)().'</td>';
 						print "<td>";
 						
 						print '<form action="" method="post" onsubmit="return confirm(\'Are you sure you want to remove this?\');">';
@@ -167,6 +171,7 @@ function OpenACalendar_admin_menu() {
 				print '<td colspan="5"><select name="filterKey">';
 				print '<option value="">filter by?</option><option value="group">group</option><option value="area">area</option>';
 				print '<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>';
+				print '<option value="userattending">user attending</option>';
 				print '</select>: <input type="text" name="filterValue"></td>';
 				print '<td><input type="submit" value="Create New Source"></td>';
 				print '</form>';

@@ -19,7 +19,9 @@ class OpenACalendarModelSource {
 	protected $venue_slug;
 	protected $curated_list_slug;
 	protected $country_code;
-	
+	protected $user_attending_events;
+
+
 	public function buildFromDatabase($data) {
 		$this->id = $data['id'];
 		$this->poolid = $data['poolid'];
@@ -29,6 +31,7 @@ class OpenACalendarModelSource {
 		$this->venue_slug = $data['venue_slug'] ? $data['venue_slug'] : null;
 		$this->curated_list_slug = $data['curated_list_slug'] ? $data['curated_list_slug'] : null;
 		$this->country_code = $data['country_code'] ? $data['country_code'] : null;
+		$this->user_attending_events = $data['user_attending_events'] ? $data['user_attending_events'] : null;
 	}
 	
 	public function getId() { return $this->id; }
@@ -105,6 +108,8 @@ class OpenACalendarModelSource {
 			$url .= '/curatedlist/'.$this->curated_list_slug;
 		} else if ($this->country_code) {
 			$url .= '/country/'.$this->country_code;
+		} else if ($this->user_attending_events) {
+			$url .= '/person/'.$this->user_attending_events;
 		}
 		
 		$url .= '/events.json';
@@ -112,6 +117,14 @@ class OpenACalendarModelSource {
 		return $url;
 	}
 	
+	public function getUserAttendingEvents() {
+		return $this->user_attending_events;
+	}
+
+	public function setUserAttendingEvents($user_attending_events) {
+		$this->user_attending_events = trim(str_replace(array(' '), array(''), $user_attending_events));
+	}
+
 }
 
 class OpenACalendarModelEvent {

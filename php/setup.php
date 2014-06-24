@@ -13,7 +13,7 @@
 function OpenACalendar_database_setup() {
 	global $wpdb;
 	
-	$currentVersion = 2;
+	$currentVersion = 3;
 	$installedVersion = get_option( "openacalendar_db_version" );	
 	
 	if ($installedVersion != $currentVersion) {
@@ -36,6 +36,7 @@ function OpenACalendar_database_setup() {
 			venue_slug MEDIUMINT UNSIGNED NULL,
 			curated_list_slug MEDIUMINT UNSIGNED NULL,
 			country_code VARCHAR(10) NULL,
+			user_attending_events VARCHAR(255) NULL,
 			deleted MEDIUMINT UNSIGNED NOT NULL DEFAULT 0,
 			UNIQUE KEY id (id)
 		 ) CHARSET=".DB_CHARSET.";" );
