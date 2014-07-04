@@ -17,6 +17,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'usesummarydisplay'=>true,
 		'startformat'=>'D jS M g:ia',
 		'eventcount'=>20,
+		'url'=>'site',
 	), $atts );
 	
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
@@ -26,15 +27,16 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 	if ($attributes['poolid']) {
 	
 		foreach(OpenACalendar_db_getNextEventsForPool($attributes['poolid'], $attributes['eventcount']) as $event) {
+			$url = $attributes['url'] == 'url' ? $event->getUrl() : $event->getSiteurl();
 			$html .= '<div class="OpenACalendarWidgetListEventsEvent">';
 			$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</div>';
-			$html .= '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($event->getSiteurl()).'">'.
+			$html .= '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($url).'">'.
 				htmlspecialchars($attributes['usesummarydisplay'] ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
 			if ($attributes['descriptionmaxlength'] > 0) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($attributes['descriptionmaxlength'])).'</div>';
 			}
-			$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . $event->getSiteurl() . '">More Info</a>';
+			$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url). '">More Info</a>';
 			$html .= '</div>';
 		}
 		
