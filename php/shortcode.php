@@ -19,6 +19,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'eventcount'=>20,
 		'url'=>'site',
 	), $atts );
+	$attributes['usesummarydisplay'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['usesummarydisplay']);
 	
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
@@ -48,5 +49,16 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 	
 
 	return $html;
+}
+
+function OpenACalendar_shortcode_attribute_to_boolean($in) {
+	if ($in === true) {
+		return true;
+	} else if ($in === false) {
+		return false;
+	} else {
+		$in = strtolower(trim($in));
+		return substr($in,0,2) == 'on' || in_array( substr($in,0,1), array('1','t','y'));
+	}
 }
 
