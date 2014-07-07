@@ -53,6 +53,35 @@ class EventModelTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($result, $event->getDescriptionTruncated($length));
 	}
 
+
+	function dataIsStartAndEndOnSameDay() {
+		return array(
+			array('2014-01-01 17:00:00','2014-01-01 21:00:00','Europe/London',true),
+			array('2014-01-01 17:00:00','2014-01-03 21:00:00','Europe/London',false),
+		);
+	}
+
+	/**
+	 * @dataProvider dataIsStartAndEndOnSameDay
+	 */
+	function testIsStartAndEndOnSameDay($start, $end, $timezone, $result) {
+		$event = new OpenACalendarModelEvent();
+		$event->buildFromDatabase(array(
+			'baseurl'=>null,
+			'slug'=>null,
+			'summary'=>null,
+			'summary_display'=>null,
+			'description'=>null,
+			'start_at'=>$start,
+			'end_at'=>$end,
+			'siteurl'=>null,
+			'url'=>null,
+			'timezone'=>null,
+			'deleted'=>null,
+			'description'=>null,
+		));
+		$this->assertEquals($result, $event->isStartAndEndOnSameDay($timezone));
+	}
 	
 }
 

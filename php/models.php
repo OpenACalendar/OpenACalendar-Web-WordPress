@@ -239,7 +239,6 @@ class OpenACalendarModelEvent {
 		}
 	}
 
-	
 	public function getEndAt() {
 		return $this->end_at;
 	}
@@ -253,7 +252,26 @@ class OpenACalendarModelEvent {
 			return $sa->format("Y-m-d H:i:s");
 		}
 	}
-	
+
+	public function getEndAtAsString($timezone='UTC', $format="Y-m-d H:i:s") {
+		if ($this->end_at->getTimezone() == $timezone) {
+			return $this->end_at->format($format);
+		} else {
+			$sa = clone $this->end_at;
+			$sa->setTimezone(new \DateTimeZone($timezone));
+			return $sa->format($format);
+		}
+	}
+
+	public function isStartAndEndOnSameDay($timezone = 'UTC') {
+		$timezone = new \DateTimeZone($timezone);
+		$start = clone $this->start_at;
+		$start->setTimezone($timezone);
+		$end = clone $this->end_at;
+		$end->setTimezone($timezone);
+		return $start->format("Y-m-d") == $end->format("Y-m-d");
+	}
+
 	public function getSiteurl() {
 		return $this->siteurl;
 	}

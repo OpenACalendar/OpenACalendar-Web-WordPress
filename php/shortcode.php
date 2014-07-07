@@ -16,6 +16,9 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'descriptionmaxlength'=>300,
 		'usesummarydisplay'=>true,
 		'startformat'=>'D jS M g:ia',
+		'endformatsameday'=>'',
+		'endformat'=>'',
+		'startandenddivider' => ' to ',
 		'eventcount'=>20,
 		'url'=>'site',
 	), $atts );
@@ -30,7 +33,20 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		foreach(OpenACalendar_db_getNextEventsForPool($attributes['poolid'], $attributes['eventcount']) as $event) {
 			$url = $attributes['url'] == 'url' ? $event->getUrl() : $event->getSiteurl();
 			$html .= '<div class="OpenACalendarWidgetListEventsEvent">';
-			$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</div>';
+			$end = null;
+			if ($attributes['endformatsameday'] || $attributes['endformat']) {
+				$format = $attributes['endformat'];
+				if ($event->isStartAndEndOnSameDay($event->getTimezone()) && $attributes['endformatsameday']) {
+					$format = $attributes['endformatsameday'];
+				}
+				$end = $event->getStartAtAsString($event->getTimezone(), $format);
+			}
+			if ($end) {
+				$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).
+					$attributes['startandenddivider'].$end.'</div>';
+			} else {
+				$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</div>';
+			}
 			$html .= '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($url).'">'.
 				htmlspecialchars($attributes['usesummarydisplay'] ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
