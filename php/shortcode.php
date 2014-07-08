@@ -39,7 +39,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 				if ($event->isStartAndEndOnSameDay($event->getTimezone()) && $attributes['endformatsameday']) {
 					$format = $attributes['endformatsameday'];
 				}
-				$end = $event->getStartAtAsString($event->getTimezone(), $format);
+				$end = $event->getEndAtAsString($event->getTimezone(), $format);
 			}
 			if ($end) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).
