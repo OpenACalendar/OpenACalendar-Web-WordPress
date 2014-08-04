@@ -21,6 +21,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'startandenddivider' => ' to ',
 		'eventcount'=>20,
 		'url'=>'site',
+		'image'=>FALSE,
 	), $atts );
 	$attributes['usesummarydisplay'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['usesummarydisplay']);
 	
@@ -33,6 +34,25 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		foreach(OpenACalendar_db_getNextEventsForPool($attributes['poolid'], $attributes['eventcount']) as $event) {
 			$url = $attributes['url'] == 'url' ? $event->getUrl() : $event->getSiteurl();
 			$html .= '<div class="OpenACalendarWidgetListEventsEvent">';
+			// image
+			if (strtolower($attributes['image']) == 'full' && $event->getHasImage() ) {
+				$html .= '<div class="OpenACalendarWidgetListEventImage"><a href="'.htmlspecialchars($url).'">'.
+					'<img src="'.htmlspecialchars($event->getImageUrlFull()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
+					'</a></div>';
+			} else if (strtolower($attributes['image']) == 'normal' && $event->getHasImage() ) {
+				$html .= '<div class="OpenACalendarWidgetListEventImage"><a href="'.htmlspecialchars($url).'">'.
+					'<img src="'.htmlspecialchars($event->getImageUrlNormal()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
+					'</a></div>';
+			} else if (intval($attributes['image']) && intval($attributes['image']) <= 500 && $event->getHasImage() ) {
+				$html .= '<div class="OpenACalendarWidgetListEventImage"><a href="'.htmlspecialchars($url).'">'.
+					'<img src="'.htmlspecialchars($event->getImageUrlNormal()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
+					'</a></div>';
+			} else if (intval($attributes['image']) && $event->getHasImage() ) {
+				$html .= '<div class="OpenACalendarWidgetListEventImage"><a href="'.htmlspecialchars($url).'">'.
+					'<img src="'.htmlspecialchars($event->getImageUrlFull()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
+					'</a></div>';
+			}
+			// start and end
 			$end = null;
 			if ($attributes['endformatsameday'] || $attributes['endformat']) {
 				$format = $attributes['endformat'];
@@ -47,12 +67,15 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 			} else {
 				$html .= '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</div>';
 			}
+			// summary
 			$html .= '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($url).'">'.
 				htmlspecialchars($attributes['usesummarydisplay'] ? $event->getSummaryDisplay() : $event->getSummary()).
-				'</a></div>';	
+				'</a></div>';
+			// description
 			if ($attributes['descriptionmaxlength'] > 0) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($attributes['descriptionmaxlength'])).'</div>';
 			}
+			// link
 			$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url). '">More Info</a>';
 			$html .= '</div>';
 		}

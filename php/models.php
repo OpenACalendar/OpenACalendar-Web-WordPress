@@ -112,7 +112,7 @@ class OpenACalendarModelSource {
 			$url .= '/person/'.$this->user_attending_events;
 		}
 		
-		$url .= '/events.json';
+		$url .= '/events.json?includeMedias=true';
 		
 		return $url;
 	}
@@ -143,6 +143,11 @@ class OpenACalendarModelEvent {
 	protected $url;
 	protected $timezone;
 	protected $deleted;
+
+	protected $image_url_normal;
+	protected $image_url_full;
+	protected $image_title;
+	protected $image_source_text;
 	
 	public function buildFromDatabase($data) {
 		$this->baseurl = $data['baseurl'];
@@ -157,6 +162,10 @@ class OpenACalendarModelEvent {
 		$this->url = $data['url'];
 		$this->timezone = $data['timezone'];
 		$this->deleted = $data['deleted'];
+		$this->image_url_normal  = $data['image_url_normal'];
+		$this->image_url_full  = $data['image_url_full'];
+		$this->image_title = $data['image_title'];
+		$this->image_source_text = $data['image_source_text'];
 	}
 	
 	public function buildFromAPI1JSON($baseurl, $data) {
@@ -173,7 +182,13 @@ class OpenACalendarModelEvent {
 		$this->siteurl = $data->siteurl;
 		$this->url = $data->url;
 		$this->timezone = $data->timezone;
-		$this->deleted = $data->deleted;	
+		$this->deleted = $data->deleted;
+		if (isset($data->medias) && count($data->medias) > 0 && isset($data->medias[0]->picture)) {
+			$this->image_title = $data->medias[0]->title;
+			$this->image_source_text = $data->medias[0]->sourcetext;
+			$this->image_url_normal = $data->medias[0]->picture->normalURL;
+			$this->image_url_full = $data->medias[0]->picture->fullURL;
+		}
 	}
 	
 	public function getId() {
@@ -289,6 +304,30 @@ class OpenACalendarModelEvent {
 		return $this->deleted;
 	}
 
-	
+	public function getImageSourceText()
+	{
+		return $this->image_source_text;
+	}
+
+	public function getImageTitle()
+	{
+		return $this->image_title;
+	}
+
+	public function getImageUrlFull()
+	{
+		return $this->image_url_full;
+	}
+
+	public function getImageUrlNormal()
+	{
+		return $this->image_url_normal;
+	}
+
+	public function getHasImage()
+	{
+		return $this->image_url_normal && $this->image_url_full;
+	}
+
 }
 

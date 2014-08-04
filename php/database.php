@@ -70,6 +70,10 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 			'url'=>$event->getUrl(),
 			'deleted'=>($event->getDeleted() ? 1 : 0),
 			'timezone'=>$event->getTimezone(),
+			'image_url_normal'=>$event->getImageUrlNormal(),
+			'image_url_full'=>$event->getImageUrlFull(),
+			'image_title'=>$event->getImageTitle(),
+			'image_source_text'=>$event->getImageSourceText(),
 		),array(
 			'id'=>$id
 		));
@@ -86,6 +90,10 @@ function OpenACalendar_db_storeEvent(OpenACalendarModelEvent $event, $poolid, $s
 			'url'=>$event->getUrl(),
 			'deleted'=>($event->getDeleted() ? 1 : 0),
 			'timezone'=>$event->getTimezone(),
+			'image_url_normal'=>$event->getImageUrlNormal(),
+			'image_url_full'=>$event->getImageUrlFull(),
+			'image_title'=>$event->getImageTitle(),
+			'image_source_text'=>$event->getImageSourceText(),
 		));
 		$id = $wpdb->insert_id;
 	}

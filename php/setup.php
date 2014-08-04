@@ -13,7 +13,7 @@
 function OpenACalendar_database_setup() {
 	global $wpdb;
 	
-	$currentVersion = 3;
+	$currentVersion = 4;
 	$installedVersion = get_option( "openacalendar_db_version" );	
 	
 	if ($installedVersion != $currentVersion) {
@@ -53,6 +53,10 @@ function OpenACalendar_database_setup() {
 			siteurl VARCHAR(255) NULL,
 			url VARCHAR(255) NULL,
 			timezone VARCHAR(255) NULL,
+			image_url_normal VARCHAR(255) NULL,
+			image_url_full VARCHAR(255) NULL,
+			image_title VARCHAR(255) NULL,
+			image_source_text VARCHAR(255) NULL,
 			deleted MEDIUMINT UNSIGNED NOT NULL DEFAULT 0,			
 			UNIQUE KEY id (id)
 		 ) CHARSET=".DB_CHARSET.";" );
