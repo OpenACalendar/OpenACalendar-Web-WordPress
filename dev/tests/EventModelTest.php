@@ -49,6 +49,10 @@ class EventModelTest extends \PHPUnit_Framework_TestCase {
 				'timezone'=>null,
 				'deleted'=>null,
 				'description'=>$set,
+				'image_url_normal'=>null,
+				'image_url_full'=>null,
+				'image_title'=>null,
+				'image_source_text'=>null,
 			));
 		$this->assertEquals($result, $event->getDescriptionTruncated($length));
 	}
@@ -79,6 +83,10 @@ class EventModelTest extends \PHPUnit_Framework_TestCase {
 			'timezone'=>null,
 			'deleted'=>null,
 			'description'=>null,
+			'image_url_normal'=>null,
+			'image_url_full'=>null,
+			'image_title'=>null,
+			'image_source_text'=>null,
 		));
 		$this->assertEquals($result, $event->isStartAndEndOnSameDay($timezone));
 	}
