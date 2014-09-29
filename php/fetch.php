@@ -13,8 +13,22 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 function OpenACalendar_getAllEvents() {
 	foreach (OpenACalendar_db_getCurrentPools() as $pool) {
 		foreach(OpenACalendar_db_getCurrentSourcesForPool($pool['id']) as $source) {
-			OpenACalendar_getAndStoreEventsForSource($source);
+			try {
+				OpenACalendar_getAndStoreEventsForSource($source);
+			} catch (OpenACalendarGetEventsException $error) {
+				// todo - log ?
+			}
 		}
+	}
+}
+
+class OpenACalendarGetEventsException extends \Exception {
+	protected $returnedData;
+
+	function __construct($message, $returnedData)
+	{
+		parent::__construct($message);
+		$this->returnedData = $returnedData;
 	}
 }
 
@@ -32,24 +46,23 @@ function OpenACalendar_getAndStoreEventsForSource(OpenACalendarModelSource $sour
 	
 	if (is_object($data)) {
 
-		$count = 0;
+		if (isset($data->data)) {
 
-		foreach($data->data as $eventData) {
-			$eventModel = new OpenACalendarModelEvent();
-			$eventModel->buildFromAPI1JSON($sourcedata->getBaseurl(), $eventData);
-			$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata->getPoolID(), $sourcedata->getId());
-			$count++;
+			$count = 0;
+			foreach($data->data as $eventData) {
+				$eventModel = new OpenACalendarModelEvent();
+				$eventModel->buildFromAPI1JSON($sourcedata->getBaseurl(), $eventData);
+				$eventid = OpenACalendar_db_storeEvent($eventModel, $sourcedata->getPoolID(), $sourcedata->getId());
+				$count++;
+			}
+			return $count;
+
+		} else {
+			throw new OpenACalendarGetEventsException("Could parse JSON, but expected data is missing? ",$dataString);
 		}
-
-		return $count;
-	
 	} else {
-		return -1;
+		throw new OpenACalendarGetEventsException("Could not parse JSON!",$dataString);
 	}
-	
-	
-	
-	
-	
+
 }
 

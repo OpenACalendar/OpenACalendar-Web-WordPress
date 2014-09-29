@@ -32,11 +32,16 @@ function OpenACalendar_admin_menu() {
 		if ($pool) {
 			$sources = OpenACalendar_db_getCurrentSourcesForPool($pool['id']);
 			foreach ($sources as $source) {
-				$count = OpenACalendar_getAndStoreEventsForSource($source);
-				print "<p>Source: ".htmlspecialchars($source->getBaseurl());
-				
-				print " got ".$count." events.";
-				print "</p>";
+				try {
+					$count = OpenACalendar_getAndStoreEventsForSource($source);
+					print "<p>Source: ".htmlspecialchars($source->getBaseurl());
+					print " got ".$count." events.";
+					print "</p>";
+				} catch (OpenACalendarGetEventsException $error) {
+					print "<p>Source: ".htmlspecialchars($source->getBaseurl());
+					print " had an error! Message: ".$error->getMessage();
+					print "</p>";
+				}
 			}
 		}
 		print OpenACalendar_admin_returnToMenuHTML();
@@ -48,11 +53,16 @@ function OpenACalendar_admin_menu() {
 
 		$source = OpenACalendar_db_getCurrentSource(intval($_POST['sourceid']));
 		if ($source) {
-			$count = OpenACalendar_getAndStoreEventsForSource($source);
-			print "<p>Source: ".htmlspecialchars($source->getBaseurl());
-			
-			print " got ".$count." events.";
-			print "</p>";
+			try {
+				$count = OpenACalendar_getAndStoreEventsForSource($source);
+				print "<p>Source: ".htmlspecialchars($source->getBaseurl());
+				print " got ".$count." events.";
+				print "</p>";
+			} catch (OpenACalendarGetEventsException $error) {
+				print "<p>Source: ".htmlspecialchars($source->getBaseurl());
+				print " had an error! Message: ".$error->getMessage();
+				print "</p>";
+			}
 		}
 		
 		print OpenACalendar_admin_returnToMenuHTML();
