@@ -8,6 +8,9 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
+class OpenACalendarCountryNotRecognisedError extends Exception {
+}
+
 class OpenACalendarModelSource {
 
 	protected $id;
@@ -92,7 +95,23 @@ class OpenACalendarModelSource {
 	}
 
 	public function setCountryCode($country_code) {
-		$this->country_code = $country_code;
+		if ($country_code) {
+			if ($this->isValidCountryCode($country_code)) {
+				$this->country_code = trim($country_code);
+			} else {
+				throw new OpenACalendarCountryNotRecognisedError();
+			}
+		}
+	}
+
+	public function isValidCountryCode($country_code) {
+		foreach(explode("\n", file_get_contents(__DIR__.'/../iso3166.tab')) as $line) {
+			if ($line && substr($line, 0,1) != '#') {
+				$bits = explode("\t", $line) ;
+				if (strtoupper($bits[0]) == strtoupper(trim($country_code))) return true;
+			}
+		}
+		return false;
 	}
 
 	public function getJSONAPIURL() {

@@ -125,6 +125,39 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 		$source->setBaseurl($in);
 		$this->assertEquals($out, $source->getBaseurl());
 	}
-	
+
+	function dataForSetCountryPass() {
+		return array(
+			array('GB','GB'),
+			array('gb','gb'),
+			array('gb ','gb'),
+			array('DE','DE'),
+		);
+	}
+
+	/**
+	* @dataProvider dataForSetCountryPass
+	*/
+	function testSetCountryPass($in, $out) {
+		$source = new OpenACalendarModelSource();
+		$source->setCountryCode($in);
+		$this->assertEquals($out, $source->getCountryCode());
+	}
+
+	function dataForSetCountryFail() {
+		return array(
+			array('The nation where cats rule supreme!'),
+		);
+	}
+
+	/**
+	* @dataProvider dataForSetCountryFail
+	*/
+	function testSetCountryFail($country) {
+		$source = new OpenACalendarModelSource();
+		$this->setExpectedException('OpenACalendarCountryNotRecognisedError');
+		$source->setCountryCode($country);
+	}
+
 }
 
