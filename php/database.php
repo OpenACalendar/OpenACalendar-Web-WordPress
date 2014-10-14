@@ -144,7 +144,7 @@ function OpenACalendar_db_newSource(OpenACalendarModelSource $source) {
 				"venue_slug=%d AND ".
 				"area_slug=%d AND ".
 				"curated_list_slug=%d AND ".
-				"country_code=%d AND ".
+				"country_code=%s AND ".
 				"user_attending_events=%d AND ".
 				"baseurl=%s  ",
 				$source->getPoolID(),
