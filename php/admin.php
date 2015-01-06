@@ -181,15 +181,15 @@ function OpenACalendar_admin_menu() {
 			print '<input type="text" name="attribute_usesummarydisplay" value="'.htmlspecialchars($attributes['usesummarydisplay']).'">';
 
 			print '<h4>startformat</h4>';
-			print '<div>Format of start date and time. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<div>Format of start date and time. Should match <a href="http://php.net/date" target="_blank">PHP date formats</a>.</div>';
 			print '<input type="text" name="attribute_startformat" value="'.htmlspecialchars($attributes['startformat']).'">';
 
 			print '<h4>endformat</h4>';
-			print '<div>Format of end date and time. Optional. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<div>Format of end date and time. Optional. Should match <a href="http://php.net/date" target="_blank">PHP date formats</a>.</div>';
 			print '<input type="text" name="attribute_endformat" value="'.htmlspecialchars($attributes['endformat']).'">';
 
 			print '<h4>endformatsameday</h4>';
-			print '<div>Format of end time if start and end are on the same day. Optional. If not given, endformat will be used. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<div>Format of end time if start and end are on the same day. Optional. If not given, endformat will be used. Should match <a href="http://php.net/date" target="_blank">PHP date formats</a>.</div>';
 			print '<input type="text" name="attribute_endformatsameday" value="'.htmlspecialchars($attributes['endformatsameday']).'">';
 
 			print '<h4>startandenddivider</h4>';

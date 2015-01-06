@@ -112,7 +112,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<input id="<?php echo $this->get_field_id( 'eventusesummarydisplay' ); ?>" name="<?php echo $this->get_field_name( 'eventusesummarydisplay' ); ?>" type="checkbox" value="1" <?php if ($eventusesummarydisplay) { echo "checked"; }; ?>>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'startformat' ); ?>"><?php _e( 'Format start time/date:' ); ?> (<a href="http://php.net/date"><?php _e( 'PHP Format' ) ?></a>)</label>
+		<label for="<?php echo $this->get_field_id( 'startformat' ); ?>"><?php _e( 'Format start time/date:' ); ?> (<a href="http://php.net/date" target="_blank"><?php _e( 'PHP Format' ) ?></a>)</label>
 		<input id="<?php echo $this->get_field_id( 'startformat' ); ?>" name="<?php echo $this->get_field_name( 'startformat' ); ?>" type="text" value="<?php echo esc_attr($startformat); ?>">
 		</p>
 		<p>
