@@ -158,6 +158,60 @@ function OpenACalendar_admin_menu() {
 
 			$attributes = OpenACalendar_shortcode_events_getDefaultAttributes();
 			$attributes['poolid'] = $pool['id'];
+			foreach($attributes as $key=>$value) {
+				if ($key != 'poolid' && isset($_POST['attribute_'.$key])) {
+					$attributes[$key] = $_POST['attribute_'.$key];
+				}
+			}
+
+			print "<h3>Options</h3>";
+
+
+			print '<form action="" method="post">';
+			print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
+			print '<input type="hidden" name="action" value="getlisteventsshortcode">';
+
+			print '<h4>descriptionmaxlength</h4>';
+			print '<div>Maximum number of characters of the description to print.</div>';
+			print '<input type="text" name="attribute_descriptionmaxlength" value="'.htmlspecialchars($attributes['descriptionmaxlength']).'">';
+
+
+			print '<h4>usesummarydisplay</h4>';
+			print '<div>Does display title include group or not? Boolean. "true" or "false".</div>';
+			print '<input type="text" name="attribute_usesummarydisplay" value="'.htmlspecialchars($attributes['usesummarydisplay']).'">';
+
+			print '<h4>startformat</h4>';
+			print '<div>Format of start date and time. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<input type="text" name="attribute_startformat" value="'.htmlspecialchars($attributes['startformat']).'">';
+
+			print '<h4>endformat</h4>';
+			print '<div>Format of end date and time. Optional. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<input type="text" name="attribute_endformat" value="'.htmlspecialchars($attributes['endformat']).'">';
+
+			print '<h4>endformatsameday</h4>';
+			print '<div>Format of end time if start and end are on the same day. Optional. If not given, endformat will be used. Should match <a href="http://php.net/date">PHP date formats</a>.</div>';
+			print '<input type="text" name="attribute_endformatsameday" value="'.htmlspecialchars($attributes['endformatsameday']).'">';
+
+			print '<h4>startandenddivider</h4>';
+			print '<div>If endformat is given, this is the phrase that will seperate the start and end..</div>';
+			print '<input type="text" name="attribute_startandenddivider" value="'.htmlspecialchars($attributes['startandenddivider']).'">';
+
+			print '<h4>eventcount</h4>';
+			print '<div>How many events to show.</div>';
+			print '<input type="text" name="attribute_eventcount" value="'.htmlspecialchars($attributes['eventcount']).'">';
+
+			print '<h4>url</h4>';
+			print '<div>One of "site" or "url". If "site", url will be address of page on OpenACalendar site. If "url", url of event.</div>';
+			print '<input type="text" name="attribute_url" value="'.htmlspecialchars($attributes['url']).'">';
+
+			print '<h4>image</h4>';
+			print '<div>Whether to show image. "false", "full" for full size, "normal" for normal size or a pixel dimension for a custom size.</div>';
+			print '<input type="text" name="attribute_image" value="'.htmlspecialchars($attributes['image']).'">';
+
+
+			print '<div style="padding-top: 40px;"><input type="submit" value="Update Shortcode with your options"></div>';
+			print '</form>';
+
 
 			print "<h3>Your Shortcode</h3>";
 
@@ -168,8 +222,8 @@ function OpenACalendar_admin_menu() {
 			print "]</div>";
 
 			print OpenACalendar_admin_returnToMenuHTML();
-			
-			print "<h3>Content Results (Style may not match)</h3>";
+
+			print "<h3>Content of Results (style may not match)</h3>";
 
 			$html = OpenACalendar_shortcode_events($attributes);
 			print $html;

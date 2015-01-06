@@ -13,14 +13,14 @@ function OpenACalendar_shortcode_events_getDefaultAttributes() {
 	return array(
 		'poolid' => null,
 		'descriptionmaxlength'=>300,
-		'usesummarydisplay'=>true,
+		'usesummarydisplay'=>'true',
 		'startformat'=>'D jS M g:ia',
 		'endformatsameday'=>'',
 		'endformat'=>'',
 		'startandenddivider' => ' to ',
 		'eventcount'=>20,
 		'url'=>'site',
-		'image'=>FALSE,
+		'image'=>'false',
 	);
 }
 
