@@ -149,7 +149,35 @@ function OpenACalendar_admin_menu() {
 			print 'Sorry, that country is not recognised. Use a country code like GB or DE.';
 			print OpenACalendar_admin_returnToMenuHTML();
 		}
-		
+
+
+	} else if (isset($_POST['action']) && $_POST['action'] == 'getlisteventsshortcode' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
+
+		$pool = OpenACalendar_db_getCurrentPool(intval($_POST['poolid']));
+		if ($pool) {
+
+			$attributes = OpenACalendar_shortcode_events_getDefaultAttributes();
+			$attributes['poolid'] = $pool['id'];
+
+			print "<h3>Your Shortcode</h3>";
+
+			print "<div>[openacalendar_events ";
+			foreach($attributes as $key=>$value) {
+				print ' '.$key.'="'.$value.'"';
+			}
+			print "]</div>";
+
+			print OpenACalendar_admin_returnToMenuHTML();
+			
+			print "<h3>Content Results (Style may not match)</h3>";
+
+			$html = OpenACalendar_shortcode_events($attributes);
+			print $html;
+
+		}
+		print OpenACalendar_admin_returnToMenuHTML();
+
+
 	} else {
 	
 	
@@ -205,6 +233,14 @@ function OpenACalendar_admin_menu() {
 					print '<input type="hidden" name="action" value="getevents">';
 					print '<input type="submit" value="Get events now">';
 					print '</form>';
+
+					print '<form action="" method="post">';
+					print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
+					print '<input type="hidden" name="action" value="getlisteventsshortcode">';
+					print '<input type="submit" value="Get list events shortcode to use">';
+					print '</form>';
+
+
 				}
 				
 				print '';

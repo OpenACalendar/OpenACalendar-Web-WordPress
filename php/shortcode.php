@@ -9,9 +9,8 @@
  * @author James Baster <james@jarofgreen.co.uk>
  */
 
-	
-function OpenACalendar_shortcode_events( $atts, $content="" ) {
-	$attributes = shortcode_atts( array(
+function OpenACalendar_shortcode_events_getDefaultAttributes() {
+	return array(
 		'poolid' => null,
 		'descriptionmaxlength'=>300,
 		'usesummarydisplay'=>true,
@@ -22,7 +21,11 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		'eventcount'=>20,
 		'url'=>'site',
 		'image'=>FALSE,
-	), $atts );
+	);
+}
+
+function OpenACalendar_shortcode_events( $atts, $content="" ) {
+	$attributes = shortcode_atts( OpenACalendar_shortcode_events_getDefaultAttributes(), $atts );
 	$attributes['usesummarydisplay'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['usesummarydisplay']);
 	
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
@@ -30,8 +33,9 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 	$html = '<div class="OpenACalendarListEvents">';
 
 	if ($attributes['poolid']) {
-	
+
 		foreach(OpenACalendar_db_getNextEventsForPool($attributes['poolid'], $attributes['eventcount']) as $event) {
+
 			$url = $attributes['url'] == 'url' ? $event->getUrl() : $event->getSiteurl();
 			$html .= '<div class="OpenACalendarWidgetListEventsEvent">';
 			// image
@@ -82,11 +86,11 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		}
 		
 	} else {
-		
+
 	}
 
 	$html .= '</div>';
-	
+
 
 	return $html;
 }
