@@ -193,7 +193,7 @@ function OpenACalendar_admin_menu() {
 			print '<input type="text" name="attribute_endformatsameday" value="'.htmlspecialchars($attributes['endformatsameday']).'">';
 
 			print '<h4>startandenddivider</h4>';
-			print '<div>If endformat is given, this is the phrase that will seperate the start and end..</div>';
+			print '<div>If endformat is given, this is the phrase that will separate the start and end..</div>';
 			print '<input type="text" name="attribute_startandenddivider" value="'.htmlspecialchars($attributes['startandenddivider']).'">';
 
 			print '<h4>eventcount</h4>';
