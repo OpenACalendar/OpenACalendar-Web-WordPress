@@ -14,6 +14,35 @@ function OpenACalendar_admin_returnToMenuHTML() {
 
 }
 
+function OpenACalendar_admin_newSourceHTML() {
+	return 'New Source URL: <input type="text" name="baseurl"> <select name="filterKey">'.
+		'<option value="">filter by?</option><option value="group">group</option><option value="area">area</option>'.
+		'<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>'.
+		'<option value="userattending">user attending</option>'.
+		'</select>: <input type="text" name="filterValue">';
+}
+
+
+function OpenACalendar_admin_process_new_source($poolid) {
+	$source = new OpenACalendarModelSource();
+	$source->setPoolID($poolid);
+	if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'group') {
+		$source->setGroupSlug($_POST['filterValue']);
+	} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'area') {
+		$source->setAreaSlug($_POST['filterValue']);
+	} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'curatedlist') {
+		$source->setCuratedListSlug($_POST['filterValue']);
+	} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'country') {
+		$source->setCountryCode($_POST['filterValue']);
+	} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'venue') {
+		$source->setVenueSlug($_POST['filterValue']);
+	} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'userattending') {
+		$source->setUserAttendingEvents($_POST['filterValue']);
+	}
+	$source->setBaseurl($_POST['baseurl']);
+	return OpenACalendar_db_newSource($source);
+}
+
 function OpenACalendar_admin_menu() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -84,27 +113,11 @@ function OpenACalendar_admin_menu() {
 	} else 	if (isset($_POST['action']) && $_POST['action'] == 'newsource' && isset($_POST['poolid']) && intval($_POST['poolid'])) {
 
 		try {
-			$source = new OpenACalendarModelSource();
-			$source->setPoolID($_POST['poolid']);
-			if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'group') {
-				$source->setGroupSlug($_POST['filterValue']);
-			} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'area') {
-				$source->setAreaSlug($_POST['filterValue']);
-			} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'curatedlist') {
-				$source->setCuratedListSlug($_POST['filterValue']);
-			} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'country') {
-				$source->setCountryCode($_POST['filterValue']);
-			} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'venue') {
-				$source->setVenueSlug($_POST['filterValue']);
-			} else if (isset($_POST['filterKey']) && $_POST['filterKey'] == 'userattending') {
-				$source->setUserAttendingEvents($_POST['filterValue']);
-			}
-			$source->setBaseurl($_POST['baseurl']);
-			$id = OpenACalendar_db_newSource($source);
+			$id = OpenACalendar_admin_process_new_source($_POST['poolid']);
 			print '<p>Done</p>';
 
 			print '<form action="" method="post">';
-			print '<input type="hidden" name="sourceid" value="'.$source->getId().'">';
+			print '<input type="hidden" name="sourceid" value="'.$id.'">';
 			print '<input type="hidden" name="action" value="getevents">';
 			print '<input type="submit" value="Get events from this source now">';
 			print '</form>';
@@ -117,9 +130,25 @@ function OpenACalendar_admin_menu() {
 		
 	} else if (isset($_POST['action']) && $_POST['action'] == 'newpool' && isset($_POST['title']) && trim($_POST['title'])) {
 		
-		$id = OpenACalendar_db_newPool($_POST['title']);
-		print '<p>Done</p>';
-		print OpenACalendar_admin_returnToMenuHTML();
+		$poolid = OpenACalendar_db_newPool($_POST['title']);
+
+		try {
+			$sourceid = OpenACalendar_admin_process_new_source($poolid);
+
+			print '<p>Done</p>';
+
+			print '<form action="" method="post">';
+			print '<input type="hidden" name="sourceid" value="'.$sourceid.'">';
+			print '<input type="hidden" name="action" value="getevents">';
+			print '<input type="submit" value="Get events from this source now">';
+			print '</form>';
+
+			print OpenACalendar_admin_returnToMenuHTML();
+
+		} catch (OpenACalendarCountryNotRecognisedError $error) {
+			print 'Sorry, that country is not recognised. Use a country code like GB or DE.';
+			print OpenACalendar_admin_returnToMenuHTML();
+		}
 		
 	} else {
 	
@@ -182,12 +211,7 @@ function OpenACalendar_admin_menu() {
 				print '<form action="" method="post">';
 				print '<input type="hidden" name="action" value="newsource">';	
 				print '<input type="hidden" name="poolid" value="'.$pool['id'].'">';
-				print '<td>New Source URL: <input type="text" name="baseurl"></td>';
-				print '<td colspan="5"><select name="filterKey">';
-				print '<option value="">filter by?</option><option value="group">group</option><option value="area">area</option>';
-				print '<option value="curatedlist">curatedlist</option><option value="country">country</option><option value="venue">venue</option>';
-				print '<option value="userattending">user attending</option>';
-				print '</select>: <input type="text" name="filterValue"></td>';
+				print '<td colspan="6">'.OpenACalendar_admin_newSourceHTML().'</td>';
 				print '<td><input type="submit" value="Create New Source"></td>';
 				print '</form>';
 
@@ -196,10 +220,10 @@ function OpenACalendar_admin_menu() {
 			echo '<p>No pools</p>';
 		}
 		
-		print '<h3>New Event Pool</h3>';
-		print '<form action="" method="post">';
-		print '<label>Title: <input type="text" name="title"></label>';
-		print '<input type="hidden" name="action" value="newpool">';
+		print '<h3>New Event Pool and source of events</h3>';
+		print '<form action="" method="post"><input type="hidden" name="action" value="newpool">';
+		print '<div><label>Title: <input type="text" name="title"></label></div>';
+		print '<div>'.OpenACalendar_admin_newSourceHTML().'</div>';
 		print '<input type="submit" value="Create">';
 		print '</form>';
 	}
