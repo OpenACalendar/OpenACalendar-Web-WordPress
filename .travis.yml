@@ -5,9 +5,14 @@ php:
   - "5.3"
   - "5.2"
 
+before_script:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
 
+script: phpunit  --coverage-clover build/logs/clover.xml --configuration dev/tests/phpunit.xml
 
+after_script:
+  - php vendor/bin/coveralls -v
 
-script: phpunit --configuration dev/tests/phpunit.xml
 
 
