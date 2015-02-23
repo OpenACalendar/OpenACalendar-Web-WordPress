@@ -98,9 +98,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'poolid' ); ?>"><?php _e( 'Event Pool ID:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'poolid' ); ?>"><?php _e( 'Event Pool:' ); ?></label> 
 		<select id="<?php echo $this->get_field_id( 'poolid' ); ?>" name="<?php echo $this->get_field_name( 'poolid' ); ?>">
-		<?php foreach($pools as $pool)  { ?><option value="<?php echo $pool['id']; ?>" <?php if ($pool['id'] == $poolID) { ?>selected="selected" <? } ?>><?php echo htmlspecialchars($pool['title']); ?></option><? } ?>
+		<?php foreach($pools as $pool)  { ?><option value="<?php echo $pool['id']; ?>" <?php if ($pool['id'] == $poolID) { ?>selected="selected" <?php } ?>><?php echo htmlspecialchars($pool['title']); ?></option><?php } ?>
 		</select>
 		</p>
 		<p>
