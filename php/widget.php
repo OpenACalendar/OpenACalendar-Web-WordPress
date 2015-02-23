@@ -90,6 +90,8 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 				$instance['url']: 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
 
+		$pools = OpenACalendar_db_getCurrentPools();
+
 		?>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
@@ -97,7 +99,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'poolid' ); ?>"><?php _e( 'Event Pool ID:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'poolid' ); ?>" name="<?php echo $this->get_field_name( 'poolid' ); ?>" type="text" value="<?php echo esc_attr( $poolID ); ?>">
+		<select id="<?php echo $this->get_field_id( 'poolid' ); ?>" name="<?php echo $this->get_field_name( 'poolid' ); ?>">
+		<?php foreach($pools as $pool)  { ?><option value="<?php echo $pool['id']; ?>" <?php if ($pool['id'] == $poolID) { ?>selected="selected" <? } ?>><?php echo htmlspecialchars($pool['title']); ?></option><? } ?>
+		</select>
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'descriptionmaxlength' ); ?>"><?php _e( 'Description Max Length:' ); ?></label> 
