@@ -26,6 +26,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 	const OPTION_DEFAULT_DESCRIPTION_MAX_LENGHT = 300;
 	const OPTION_DEFAULT_EVENT_COUNT = 5;
 	const OPTION_DEFAULT_USE_SUMMARY_DISPLAY = 1;
+	const OPTION_DEFAULT_EVENT_SHOW_MORE_LINK = 1;
 	const OPTION_DEFAULT_START_FORMAT = 'D jS M g:ia';
 	const OPTION_DEFAULT_URL = "site";
 	
@@ -47,7 +48,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$whichURL = isset($instance['url']) ? 
 				$instance['url']: 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
-		
+		$eventshowmorelink = isset($instance['eventshowmorelink']) ?
+			intval($instance['eventshowmorelink']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_SHOW_MORE_LINK;
+
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -63,7 +67,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			if ($descriptionMaxLength > 0) {
 				echo '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
 			}
-			echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url) . '">More Info</a>';
+			if ($eventshowmorelink) {
+				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url) . '">More Info</a>';
+			}
 			echo '</div>';
 		}
 		
@@ -89,6 +95,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$whichURL = isset($instance['url']) ? 
 				$instance['url']: 
 				OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
+		$eventshowmorelink = isset($instance['eventshowmorelink']) ?
+			intval($instance['eventshowmorelink']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_SHOW_MORE_LINK;
 
 		$pools = OpenACalendar_db_getCurrentPools();
 
@@ -116,6 +125,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<input id="<?php echo $this->get_field_id( 'eventusesummarydisplay' ); ?>" name="<?php echo $this->get_field_name( 'eventusesummarydisplay' ); ?>" type="checkbox" value="1" <?php if ($eventusesummarydisplay) { echo "checked"; }; ?>>
 		</p>
 		<p>
+		<label for="<?php echo $this->get_field_id( 'eventshowmorelink' ); ?>"><?php _e( 'Show more link for each event:' ); ?></label>
+		<input id="<?php echo $this->get_field_id( 'eventshowmorelink' ); ?>" name="<?php echo $this->get_field_name( 'eventshowmorelink' ); ?>" type="checkbox" value="1" <?php if ($eventshowmorelink) { echo "checked"; }; ?>>
+		</p>
+		<p>
 		<label for="<?php echo $this->get_field_id( 'startformat' ); ?>"><?php _e( 'Format start time/date:' ); ?> (<a href="http://php.net/date" target="_blank"><?php _e( 'PHP Format' ) ?></a>)</label>
 		<input id="<?php echo $this->get_field_id( 'startformat' ); ?>" name="<?php echo $this->get_field_name( 'startformat' ); ?>" type="text" value="<?php echo esc_attr($startformat); ?>">
 		</p>
@@ -140,6 +153,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['eventcount'] = ( isset( $new_instance['eventcount'] ) ) ? 
 				intval( $new_instance['eventcount'] ) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
+		$instance['eventshowmorelink'] = ( isset( $new_instance['eventshowmorelink'] ) ) ? 1 : 0;
 		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] ) ) ? 1 : 0;
 		$instance['startformat'] = ( ! empty( $new_instance['startformat'] ) ) ?  $new_instance['startformat']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_START_FORMAT;
 		$instance['url'] =  ( ! empty( $new_instance['url'] ) ) ?  $new_instance['url']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
