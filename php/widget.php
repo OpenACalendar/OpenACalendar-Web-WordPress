@@ -27,6 +27,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 	const OPTION_DEFAULT_EVENT_COUNT = 5;
 	const OPTION_DEFAULT_USE_SUMMARY_DISPLAY = 1;
 	const OPTION_DEFAULT_EVENT_SHOW_MORE_LINK = 1;
+	const OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW = 0;
 	const OPTION_DEFAULT_START_FORMAT = 'D jS M g:ia';
 	const OPTION_DEFAULT_URL = "site";
 	
@@ -51,6 +52,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventshowmorelink = isset($instance['eventshowmorelink']) ?
 			intval($instance['eventshowmorelink']) :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_SHOW_MORE_LINK;
+		$eventlinkopeninnewwindow = isset($instance['eventlinkopeninnewwindow']) ?
+			intval($instance['eventlinkopeninnewwindow']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW;
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
@@ -61,14 +65,14 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			$url = $whichURL == 'url' ? $event->getUrl() : $event->getSiteurl();
 			echo '<div class="OpenACalendarWidgetListEventsEvent">';
 			echo '<div class="OpenACalendarWidgetListEventsDate">'.$event->getStartAtAsString($event->getTimezone(), $startformat).'</div>';
-			echo '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($url).'">'.
+			echo '<div class="OpenACalendarWidgetListEventsSummary"><a href="'.htmlspecialchars($url).'"'.($eventlinkopeninnewwindow?' target="_blank"':'').'>'.
 				htmlspecialchars($eventusesummarydisplay ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
 			if ($descriptionMaxLength > 0) {
 				echo '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
 			}
 			if ($eventshowmorelink) {
-				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url) . '">More Info</a>';
+				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url) . '"'.($eventlinkopeninnewwindow?' target="_blank"':'').'>More Info</a>';
 			}
 			echo '</div>';
 		}
@@ -98,6 +102,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventshowmorelink = isset($instance['eventshowmorelink']) ?
 			intval($instance['eventshowmorelink']) :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_SHOW_MORE_LINK;
+		$eventlinkopeninnewwindow = isset($instance['eventlinkopeninnewwindow']) ?
+			intval($instance['eventlinkopeninnewwindow']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW;
 
 		$pools = OpenACalendar_db_getCurrentPools();
 
@@ -129,6 +136,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<input id="<?php echo $this->get_field_id( 'eventshowmorelink' ); ?>" name="<?php echo $this->get_field_name( 'eventshowmorelink' ); ?>" type="checkbox" value="1" <?php if ($eventshowmorelink) { echo "checked"; }; ?>>
 		</p>
 		<p>
+		<label for="<?php echo $this->get_field_id( 'eventlinkopeninnewwindow' ); ?>"><?php _e( 'Open links to an event in a new window:' ); ?></label>
+		<input id="<?php echo $this->get_field_id( 'eventlinkopeninnewwindow' ); ?>" name="<?php echo $this->get_field_name( 'eventlinkopeninnewwindow' ); ?>" type="checkbox" value="1" <?php if ($eventlinkopeninnewwindow) { echo "checked"; }; ?>>
+		</p>
+		<p>
 		<label for="<?php echo $this->get_field_id( 'startformat' ); ?>"><?php _e( 'Format start time/date:' ); ?> (<a href="http://php.net/date" target="_blank"><?php _e( 'PHP Format' ) ?></a>)</label>
 		<input id="<?php echo $this->get_field_id( 'startformat' ); ?>" name="<?php echo $this->get_field_name( 'startformat' ); ?>" type="text" value="<?php echo esc_attr($startformat); ?>">
 		</p>
@@ -153,6 +164,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['eventcount'] = ( isset( $new_instance['eventcount'] ) ) ? 
 				intval( $new_instance['eventcount'] ) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
+		$instance['eventlinkopeninnewwindow'] = ( isset( $new_instance['eventlinkopeninnewwindow'] ) ) ? 1 : 0;
 		$instance['eventshowmorelink'] = ( isset( $new_instance['eventshowmorelink'] ) ) ? 1 : 0;
 		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] ) ) ? 1 : 0;
 		$instance['startformat'] = ( ! empty( $new_instance['startformat'] ) ) ?  $new_instance['startformat']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_START_FORMAT;
