@@ -42,20 +42,20 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 			$html .= '<div class="OpenACalendarWidgetListEventsEvent" itemscope itemtype="http://schema.org/Event">';
 			// image
 			if (strtolower($attributes['image']) == 'full' && $event->getHasImage() ) {
-				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.htmlspecialchars($url).'">'.
-					'<img src="'.htmlspecialchars($event->getImageUrlFull()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
+				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.esc_attr($url).'">'.
+					'<img src="'.esc_attr($event->getImageUrlFull()).'" alt="'.esc_attr($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
 					'</a></div>';
 			} else if (strtolower($attributes['image']) == 'normal' && $event->getHasImage() ) {
-				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.htmlspecialchars($url).'">'.
-					'<img src="'.htmlspecialchars($event->getImageUrlNormal()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
+				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.esc_attr($url).'">'.
+					'<img src="'.esc_attr($event->getImageUrlNormal()).'" alt="'.esc_attr($event->getImageTitle()." ".$event->getImageSourceText()).'">'.
 					'</a></div>';
 			} else if (intval($attributes['image']) && intval($attributes['image']) <= 500 && $event->getHasImage() ) {
-				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.htmlspecialchars($url).'">'.
-					'<img src="'.htmlspecialchars($event->getImageUrlNormal()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
+				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.esc_attr($url).'">'.
+					'<img src="'.esc_attr($event->getImageUrlNormal()).'" alt="'.esc_attr($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
 					'</a></div>';
 			} else if (intval($attributes['image']) && $event->getHasImage() ) {
-				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.htmlspecialchars($url).'">'.
-					'<img src="'.htmlspecialchars($event->getImageUrlFull()).'" alt="'.htmlspecialchars($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
+				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.esc_attr($url).'">'.
+					'<img src="'.esc_attr($event->getImageUrlFull()).'" alt="'.esc_attr($event->getImageTitle()." ".$event->getImageSourceText()).'" style="max-width: '.intval($attributes['image']).'px; max-height: '.intval($attributes['image']).'">'.
 					'</a></div>';
 			}
 			// start and end
@@ -77,7 +77,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" itemprop="startDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</time></div>';
 			}
 			// summary
-			$html .= '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.htmlspecialchars($url).'" itemprop="url">'.
+			$html .= '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.esc_attr($url).'" itemprop="url">'.
 				htmlspecialchars($attributes['usesummarydisplay'] ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';
 			// description
@@ -86,7 +86,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 			}
 			// link
 			if ($attributes['eventshowmorelink']) {
-				$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url). '" itemprop="url">More Info</a>';
+				$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url). '" itemprop="url">More Info</a>';
 			}
 			$html .= '</div><div class="OpenACalendarWidgetListEventsEventAfterContent"></div></div>';
 		}

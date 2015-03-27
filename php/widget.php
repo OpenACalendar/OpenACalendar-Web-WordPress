@@ -74,14 +74,14 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			$url = $whichURL == 'url' ? $event->getUrl() : $event->getSiteurl();
 			echo '<div class="OpenACalendarWidgetListEventsEvent" itemscope itemtype="http://schema.org/Event">';
 			echo '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" itemprop="startDate">'.$event->getStartAtAsString($event->getTimezone(), $startformat).'</time></div>';
-			echo '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.htmlspecialchars($url).'"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">'.
+			echo '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.esc_attr($url).'"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">'.
 				htmlspecialchars($eventusesummarydisplay ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
 			if ($descriptionMaxLength > 0) {
 				echo '<div class="OpenACalendarWidgetListEventsDescription" itemprop="description">'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
 			}
 			if ($eventshowmorelink) {
-				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url) . '"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">More Info</a>';
+				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url) . '"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">More Info</a>';
 			}
 			echo '</div>';
 		}
