@@ -208,6 +208,10 @@ function OpenACalendar_admin_menu() {
 			print '<div>Whether to show image. "false", "full" for full size, "normal" for normal size or a pixel dimension for a custom size.</div>';
 			print '<input type="text" name="attribute_image" value="'.htmlspecialchars($attributes['image']).'">';
 
+			print '<h4>eventshowmorelink</h4>';
+			print '<div>Whether to show "more" link under each event. Boolean. "true" or "false".</div>';
+			print '<input type="text" name="attribute_eventshowmorelink" value="'.htmlspecialchars($attributes['eventshowmorelink']).'">';
+
 
 			print '<div style="padding-top: 40px;"><input type="submit" value="Update Shortcode with your options"></div>';
 			print '</form>';

@@ -21,13 +21,15 @@ function OpenACalendar_shortcode_events_getDefaultAttributes() {
 		'eventcount'=>20,
 		'url'=>'site',
 		'image'=>'false',
+		'eventshowmorelink'=>'true',
 	);
 }
 
 function OpenACalendar_shortcode_events( $atts, $content="" ) {
 	$attributes = shortcode_atts( OpenACalendar_shortcode_events_getDefaultAttributes(), $atts );
 	$attributes['usesummarydisplay'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['usesummarydisplay']);
-	
+	$attributes['eventshowmorelink'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['eventshowmorelink']);
+
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
 	$html = '<div class="OpenACalendarListEvents">';
@@ -81,7 +83,9 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDescription">'.htmlspecialchars($event->getDescriptionTruncated($attributes['descriptionmaxlength'])).'</div>';
 			}
 			// link
-			$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url). '">More Info</a>';
+			if ($attributes['eventshowmorelink']) {
+				$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . htmlspecialchars($url). '">More Info</a>';
+			}
 			$html .= '</div><div class="OpenACalendarWidgetListEventsEventAfterContent"></div></div>';
 		}
 		
