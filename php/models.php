@@ -135,6 +135,26 @@ class OpenACalendarModelSource {
 		
 		return $url;
 	}
+
+	public function getWebURL() {
+		$url = "http://".$this->baseurl;
+
+		if ($this->group_slug) {
+			$url .= '/group/'.$this->group_slug;
+		} else if ($this->venue_slug) {
+			$url .= '/venue/'.$this->venue_slug;
+		} else if ($this->area_slug) {
+			$url .= '/area/'.$this->area_slug;
+		} else if ($this->curated_list_slug) {
+			$url .= '/curatedlist/'.$this->curated_list_slug;
+		} else if ($this->country_code) {
+			$url .= '/country/'.$this->country_code;
+		} else if ($this->user_attending_events) {
+			$url .= '/person/'.$this->user_attending_events;
+		}
+
+		return $url;
+	}
 	
 	public function getUserAttendingEvents() {
 		return $this->user_attending_events;

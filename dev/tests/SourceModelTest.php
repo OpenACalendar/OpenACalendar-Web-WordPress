@@ -105,7 +105,33 @@ class SourceModelTest extends \PHPUnit_Framework_TestCase {
 		$source->setCountryCode($country_code);
 		$this->assertEquals($result, $source->getJSONAPIURL());
 	}
-	
+
+
+	function dataForTestWebURL() {
+		return array(
+			array('cat.com',null,null,null,null,null,'http://cat.com'),
+			array('cat.com',1,null,null,null,null,'http://cat.com/group/1'),
+			array('cat.com',null,2,null,null,null,'http://cat.com/area/2'),
+			array('cat.com',null,null,3,null,null,'http://cat.com/venue/3'),
+			array('cat.com',null,null,null,4,null,'http://cat.com/curatedlist/4'),
+			array('cat.com',null,null,null,null,"NO",'http://cat.com/country/NO'),
+		);
+	}
+
+	/**
+	* @dataProvider dataForTestWebURL
+	*/
+	function testWebURL($baseurl, $group_slug, $area_slug, $venue_slug, $curated_list_slug, $country_code, $result) {
+		$source = new OpenACalendarModelSource();
+		$source->setBaseurl($baseurl);
+		$source->setGroupSlug($group_slug);
+		$source->setAreaSlug($area_slug);
+		$source->setVenueSlug($venue_slug);
+		$source->setCuratedListSlug($curated_list_slug);
+		$source->setCountryCode($country_code);
+		$this->assertEquals($result, $source->getWebURL());
+	}
+
 	function dataForSetBaseURL() {
 		return array(
 			array('http://cat.com','cat.com'),

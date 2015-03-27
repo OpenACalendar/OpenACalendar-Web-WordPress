@@ -86,6 +86,13 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			echo '</div>';
 		}
 
+		if ($moreeventslink && !$moreeventslinkurl) {
+			$sources = OpenACalendar_db_getCurrentSourcesForPool($poolID);
+			if (count($sources) > 0) {
+				$moreeventslinkurl = $sources[0]->getWebURL();
+			}
+		}
+
 		if ($moreeventslink && $moreeventslinkurl) {
 			echo '<div class="OpenACalendarWidgetListEventsMoreEvents">';
 			echo '<a href="'.esc_attr($moreeventslinkurl).'">More events</a>';
