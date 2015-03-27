@@ -30,6 +30,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 	const OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW = 0;
 	const OPTION_DEFAULT_START_FORMAT = 'D jS M g:ia';
 	const OPTION_DEFAULT_URL = "site";
+	const OPTION_DEFAULT_MORE_EVENTS_LINK = 0;
+	const OPTION_DEFAULT_MORE_EVENTS_LINK_URL = "";
+
 	
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
@@ -55,6 +58,12 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventlinkopeninnewwindow = isset($instance['eventlinkopeninnewwindow']) ?
 			intval($instance['eventlinkopeninnewwindow']) :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW;
+		$moreeventslink = isset($instance['moreeventslink']) ?
+			intval($instance['moreeventslink']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK;
+		$moreeventslinkurl = isset($instance['moreeventslinkurl']) ?
+			$instance['moreeventslinkurl'] :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
@@ -76,7 +85,13 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			}
 			echo '</div>';
 		}
-		
+
+		if ($moreeventslink && $moreeventslinkurl) {
+			echo '<div class="OpenACalendarWidgetListEventsMoreEvents">';
+			echo '<a href="'.esc_attr($moreeventslinkurl).'">More events</a>';
+			echo '</div>';
+		}
+
 		echo '</div>';
 		echo $args['after_widget'];
 	}
@@ -105,6 +120,12 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$eventlinkopeninnewwindow = isset($instance['eventlinkopeninnewwindow']) ?
 			intval($instance['eventlinkopeninnewwindow']) :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_EVENT_LINK_OPEN_IN_NEW_WINDOW;
+		$moreeventslink = isset($instance['moreeventslink']) ?
+			intval($instance['moreeventslink']) :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK;
+		$moreeventslinkurl = isset($instance['moreeventslinkurl']) ?
+			$instance['moreeventslinkurl'] :
+			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
 
 		$pools = OpenACalendar_db_getCurrentPools();
 
@@ -144,6 +165,14 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		<input id="<?php echo $this->get_field_id( 'startformat' ); ?>" name="<?php echo $this->get_field_name( 'startformat' ); ?>" type="text" value="<?php echo esc_attr($startformat); ?>">
 		</p>
 		<p>
+		<label for="<?php echo $this->get_field_id( 'moreeventslink' ); ?>"><?php _e( 'Show More Events Link:' ); ?></label>
+		<input id="<?php echo $this->get_field_id( 'moreeventslink' ); ?>" name="<?php echo $this->get_field_name( 'moreeventslink' ); ?>" type="checkbox" value="1" <?php if ($moreeventslink) { echo "checked"; }; ?>>
+		</p>
+		<p>
+		<label for="<?php echo $this->get_field_id( 'moreeventslinkurl' ); ?>"><?php _e( 'More Events Link - URL:' ); ?></label>
+		<input id="<?php echo $this->get_field_id( 'moreeventslinkurl' ); ?>" name="<?php echo $this->get_field_name( 'moreeventslinkurl' ); ?>" type="text" value="<?php echo esc_attr($moreeventslinkurl); ?>">
+		</p>
+		<p>
 		<label for="<?php echo $this->get_field_id( 'url' ); ?>"><?php _e( 'Which URL:' ); ?></label> 
 		<select  id="<?php echo $this->get_field_id( 'url' ); ?>" name="<?php echo $this->get_field_name( 'url' ); ?>">
 			<option value="site" <?php if ($whichURL == 'site') { ?>selected<?php } ?>><?php _e( 'Event on Calendar' ); ?></option>
@@ -169,7 +198,8 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] ) ) ? 1 : 0;
 		$instance['startformat'] = ( ! empty( $new_instance['startformat'] ) ) ?  $new_instance['startformat']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_START_FORMAT;
 		$instance['url'] =  ( ! empty( $new_instance['url'] ) ) ?  $new_instance['url']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
-		
+		$instance['moreeventslink'] =   ( isset( $new_instance['moreeventslink'] ) ) ? 1 : 0;
+		$instance['moreeventslinkurl'] =  ( ! empty( $new_instance['moreeventslinkurl'] ) ) ?  $new_instance['moreeventslinkurl']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
 		return $instance;
 	}
 }
