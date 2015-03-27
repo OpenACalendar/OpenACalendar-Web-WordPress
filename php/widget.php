@@ -193,12 +193,12 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['eventcount'] = ( isset( $new_instance['eventcount'] ) ) ? 
 				intval( $new_instance['eventcount'] ) : 
 				OpenACalendarEventsWidget::OPTION_DEFAULT_EVENT_COUNT;
-		$instance['eventlinkopeninnewwindow'] = ( isset( $new_instance['eventlinkopeninnewwindow'] ) ) ? 1 : 0;
-		$instance['eventshowmorelink'] = ( isset( $new_instance['eventshowmorelink'] ) ) ? 1 : 0;
-		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] ) ) ? 1 : 0;
+		$instance['eventlinkopeninnewwindow'] = ( isset( $new_instance['eventlinkopeninnewwindow'] ) && $new_instance['eventlinkopeninnewwindow'] == '1' ) ? 1 : 0;
+		$instance['eventshowmorelink'] = ( isset( $new_instance['eventshowmorelink'] )  && $new_instance['eventshowmorelink'] == '1') ? 1 : 0;
+		$instance['eventusesummarydisplay'] = ( isset( $new_instance['eventusesummarydisplay'] )  && $new_instance['eventusesummarydisplay'] == '1') ? 1 : 0;
 		$instance['startformat'] = ( ! empty( $new_instance['startformat'] ) ) ?  $new_instance['startformat']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_START_FORMAT;
 		$instance['url'] =  ( ! empty( $new_instance['url'] ) ) ?  $new_instance['url']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
-		$instance['moreeventslink'] =   ( isset( $new_instance['moreeventslink'] ) ) ? 1 : 0;
+		$instance['moreeventslink'] =   ( isset( $new_instance['moreeventslink'] ) && $new_instance['moreeventslink'] == '1' ) ? 1 : 0;
 		$instance['moreeventslinkurl'] =  ( ! empty( $new_instance['moreeventslinkurl'] ) ) ?  $new_instance['moreeventslinkurl']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
 		return $instance;
 	}
