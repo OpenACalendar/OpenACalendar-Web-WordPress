@@ -13,7 +13,7 @@ function OpenACalendar_shortcode_events_getDefaultAttributes() {
 	return array(
 		'poolid' => null,
 		'descriptionmaxlength'=>300,
-		'usesummarydisplay'=>'true',
+		'usesummarydisplay'=>'yes',
 		'startformat'=>'D jS M g:ia',
 		'endformatsameday'=>'',
 		'endformat'=>'',
@@ -21,7 +21,7 @@ function OpenACalendar_shortcode_events_getDefaultAttributes() {
 		'eventcount'=>20,
 		'url'=>'site',
 		'image'=>'false',
-		'eventshowmorelink'=>'true',
+		'eventshowmorelink'=>'no',
 	);
 }
 
