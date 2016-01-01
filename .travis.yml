@@ -17,10 +17,8 @@ matrix:
 before_script:
   - composer install --dev --no-interaction
 
-script: phpunit  --coverage-clover build/logs/clover.xml --configuration dev/tests/phpunit.xml
+script: phpunit  --configuration dev/tests/phpunit.xml
 
-after_script:
-  - php vendor/bin/coveralls -v
 
 
 
