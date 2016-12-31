@@ -32,6 +32,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 	const OPTION_DEFAULT_URL = "site";
 	const OPTION_DEFAULT_MORE_EVENTS_LINK = 0;
 	const OPTION_DEFAULT_MORE_EVENTS_LINK_URL = "";
+    const OPTION_DEFAULT_SCHEMA_ORG = 0;
 
 	
 	public function widget( $args, $instance ) {
@@ -64,6 +65,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$moreeventslinkurl = isset($instance['moreeventslinkurl']) ?
 			$instance['moreeventslinkurl'] :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
+        $schemaorg = isset($instance['schemaorg']) ?
+            intval($instance['schemaorg']) :
+            OpenACalendarLocalEventsWidget::OPTION_DEFAULT_SCHEMA_ORG;
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
@@ -72,16 +76,16 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 
 		foreach(OpenACalendar_db_getNextEventsForPool($poolID, $eventCount) as $event) {
 			$url = $whichURL == 'url' ? $event->getUrl() : $event->getSiteurl();
-			echo '<div class="OpenACalendarWidgetListEventsEvent" itemscope itemtype="http://schema.org/Event">';
-			echo '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" itemprop="startDate">'.$event->getStartAtAsString($event->getTimezone(), $startformat).'</time></div>';
-			echo '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.esc_attr($url).'"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">'.
+			echo '<div class="OpenACalendarWidgetListEventsEvent" '.($schemaorg?'itemscope itemtype="http://schema.org/Event"':'').'>';
+			echo '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" '.($schemaorg?'itemprop="startDate"':'').'>'.$event->getStartAtAsString($event->getTimezone(), $startformat).'</time></div>';
+			echo '<div class="OpenACalendarWidgetListEventsSummary" '.($schemaorg?'itemprop="name"':'').'><a href="'.esc_attr($url).'"'.($eventlinkopeninnewwindow?' target="_blank"':'').' '.($schemaorg?'itemprop="url"':'').'>'.
 				htmlspecialchars($eventusesummarydisplay ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';	
 			if ($descriptionMaxLength > 0) {
-				echo '<div class="OpenACalendarWidgetListEventsDescription" itemprop="description">'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
+				echo '<div class="OpenACalendarWidgetListEventsDescription" '.($schemaorg?'itemprop="description"':'').'>'.htmlspecialchars($event->getDescriptionTruncated($descriptionMaxLength)).'</div>';
 			}
 			if ($eventshowmorelink) {
-				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url) . '"'.($eventlinkopeninnewwindow?' target="_blank"':'').' itemprop="url">More Info</a>';
+				echo '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url) . '"'.($eventlinkopeninnewwindow?' target="_blank"':'').' '.($schemaorg?'itemprop="url"':'').'>More Info</a>';
 			}
 			echo '</div>';
 		}
@@ -133,6 +137,9 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$moreeventslinkurl = isset($instance['moreeventslinkurl']) ?
 			$instance['moreeventslinkurl'] :
 			OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
+        $schemaorg = isset($instance['schemaorg']) ?
+            intval($instance['schemaorg']) :
+            OpenACalendarLocalEventsWidget::OPTION_DEFAULT_SCHEMA_ORG;
 
 		$pools = OpenACalendar_db_getCurrentPools();
 
@@ -186,6 +193,10 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 			<option value="url" <?php if ($whichURL == 'url') { ?>selected<?php } ?>><?php _e( 'Event URL' ); ?></option>
 		</select>
 		</p>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'schemaorg' ); ?>"><?php _e( 'Show schema.org markup:' ); ?></label>
+            <input id="<?php echo $this->get_field_id( 'schemaorg' ); ?>" name="<?php echo $this->get_field_name( 'schemaorg' ); ?>" type="checkbox" value="1" <?php if ($schemaorg) { echo "checked"; }; ?>>
+        </p>
 		<?php 
 	}
 
@@ -207,6 +218,7 @@ class OpenACalendarLocalEventsWidget extends WP_Widget {
 		$instance['url'] =  ( ! empty( $new_instance['url'] ) ) ?  $new_instance['url']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_URL;
 		$instance['moreeventslink'] =   ( isset( $new_instance['moreeventslink'] ) && $new_instance['moreeventslink'] == '1' ) ? 1 : 0;
 		$instance['moreeventslinkurl'] =  ( ! empty( $new_instance['moreeventslinkurl'] ) ) ?  $new_instance['moreeventslinkurl']  : OpenACalendarLocalEventsWidget::OPTION_DEFAULT_MORE_EVENTS_LINK_URL;
+        $instance['schemaorg'] =   ( isset( $new_instance['schemaorg'] ) && $new_instance['schemaorg'] == '1' ) ? 1 : 0;
 		return $instance;
 	}
 }

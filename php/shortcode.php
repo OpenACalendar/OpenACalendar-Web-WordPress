@@ -19,6 +19,7 @@ function OpenACalendar_shortcode_events_getDefaultAttributes() {
 		'endformat'=>'',
 		'startandenddivider' => ' to ',
 		'eventcount'=>20,
+        'schemaorg'=>true,
 		'url'=>'site',
 		'image'=>'false',
 		'eventshowmorelink'=>'no',
@@ -29,6 +30,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 	$attributes = shortcode_atts( OpenACalendar_shortcode_events_getDefaultAttributes(), $atts );
 	$attributes['usesummarydisplay'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['usesummarydisplay']);
 	$attributes['eventshowmorelink'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['eventshowmorelink']);
+	$attributes['schemaorg'] = OpenACalendar_shortcode_attribute_to_boolean($attributes['schemaorg']);
 
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR."database.php";
 
@@ -39,7 +41,7 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 		foreach(OpenACalendar_db_getNextEventsForPool($attributes['poolid'], $attributes['eventcount']) as $event) {
 
 			$url = $attributes['url'] == 'url' ? $event->getUrl() : $event->getSiteurl();
-			$html .= '<div class="OpenACalendarWidgetListEventsEvent" itemscope itemtype="http://schema.org/Event">';
+			$html .= '<div class="OpenACalendarWidgetListEventsEvent"'.($attributes['schemaorg']?' itemscope itemtype="http://schema.org/Event"':'').'>';
 			// image
 			if (strtolower($attributes['image']) == 'full' && $event->getHasImage() ) {
 				$html .= '<div class="OpenACalendarWidgetListEventsEventImage"><a href="'.esc_attr($url).'">'.
@@ -70,23 +72,23 @@ function OpenACalendar_shortcode_events( $atts, $content="" ) {
 			}
 			if ($end) {
 				$html .= '<div class="OpenACalendarWidgetListEventsDate">'.
-					'<time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" itemprop="startDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</time>'.
+					'<time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" '.($attributes['schemaorg']?'itemprop="startDate"':'').'>'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</time>'.
 					$attributes['startandenddivider'].
-					'<time datetime="'.$event->getEndAtAsString($event->getTimezone(), 'c').'" itemprop="endDate">'.$end.'</time></div>';
+					'<time datetime="'.$event->getEndAtAsString($event->getTimezone(), 'c').'" '.($attributes['schemaorg']?'itemprop="endDate"':'').'>'.$end.'</time></div>';
 			} else {
-				$html .= '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" itemprop="startDate">'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</time></div>';
+				$html .= '<div class="OpenACalendarWidgetListEventsDate"><time datetime="'.$event->getStartAtAsString($event->getTimezone(), 'c').'" '.($attributes['schemaorg']?'itemprop="startDate"':'').'>'.$event->getStartAtAsString($event->getTimezone(), $attributes['startformat']).'</time></div>';
 			}
 			// summary
-			$html .= '<div class="OpenACalendarWidgetListEventsSummary" itemprop="name"><a href="'.esc_attr($url).'" itemprop="url">'.
+			$html .= '<div class="OpenACalendarWidgetListEventsSummary" '.($attributes['schemaorg']?'itemprop="name"':'').'><a href="'.esc_attr($url).'" '.($attributes['schemaorg']?'itemprop="url"':'').'>'.
 				htmlspecialchars($attributes['usesummarydisplay'] ? $event->getSummaryDisplay() : $event->getSummary()).
 				'</a></div>';
 			// description
 			if ($attributes['descriptionmaxlength'] > 0) {
-				$html .= '<div class="OpenACalendarWidgetListEventsDescription" itemprop="description">'.htmlspecialchars($event->getDescriptionTruncated($attributes['descriptionmaxlength'])).'</div>';
+				$html .= '<div class="OpenACalendarWidgetListEventsDescription" '.($attributes['schemaorg']?'itemprop="description"':'').'>'.htmlspecialchars($event->getDescriptionTruncated($attributes['descriptionmaxlength'])).'</div>';
 			}
 			// link
 			if ($attributes['eventshowmorelink']) {
-				$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url). '" itemprop="url">More Info</a>';
+				$html .= '<a class="OpenACalendarWidgetListEventsMoreLink" href="' . esc_attr($url). '" '.($attributes['schemaorg']?'itemprop="url"':'').'>More Info</a>';
 			}
 			$html .= '</div><div class="OpenACalendarWidgetListEventsEventAfterContent"></div></div>';
 		}
